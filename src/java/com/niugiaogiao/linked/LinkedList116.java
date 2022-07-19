@@ -119,12 +119,12 @@ public class LinkedList116 {
     }
 
     public Node connect4(Node root) {
-        if(root==null){
+        if (root == null) {
             return root;
         }
-        if(root.left!=null){
-            root.left.next=root.right;
-            root.right.next=root.next!=null?root.next.left:null;
+        if (root.left != null) {
+            root.left.next = root.right;
+            root.right.next = root.next != null ? root.next.left : null;
             connect4(root.left);
             connect4(root.right);
         }
