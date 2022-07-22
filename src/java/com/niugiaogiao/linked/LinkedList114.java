@@ -124,6 +124,19 @@ public class LinkedList114 {
         }
     }
 
+    private static TreeNode last = null;
+
+    public static void faltten3(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        faltten3(root.right);
+        faltten3(root.left);
+        root.right = last;
+        root.left = null;
+        last = root;
+    }
+
     public static void main(String[] args) {
         TreeNode r1 = new TreeNode();
         TreeNode r2 = new TreeNode();
