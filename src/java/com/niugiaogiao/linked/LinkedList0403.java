@@ -55,6 +55,28 @@ public class LinkedList0403 {
     }
 
 
+    public ListNode[] listOfDepth1(TreeNode tree) {
+        List<ListNode> result = new ArrayList<>();
+        run(tree, 0 , result);
+        return result.toArray(new ListNode[0]);
+    }
+
+    private void run(TreeNode tree, int deep, List<ListNode> result) {
+        if (tree == null) {
+            return;
+        } else if (result.size() == deep) {
+            result.add(new ListNode(tree.val));
+        } else {
+            ListNode cur = new ListNode(tree.val);
+            cur.next = result.get(deep);
+            result.set(deep, cur);
+        }
+
+        run(tree.right, deep + 1, result);
+        run(tree.left, deep + 1, result);
+    }
+
+
     public static void main(String[] args) {
         TreeNode r1 = new TreeNode(1);
         TreeNode r2 = new TreeNode(2);
