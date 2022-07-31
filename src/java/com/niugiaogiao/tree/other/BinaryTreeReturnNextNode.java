@@ -64,12 +64,30 @@ public class BinaryTreeReturnNextNode {
      * 并不一定需要每次都从头节点进行遍历
      * 因为给了 parent 指针，假设当前节点到下一个节点的距离是 k 的话，时间复杂度就是 O(k)
      *  二叉树递归序每一个节点都到达三次 时间复杂度 O(n)
-     * @param node
-     * @return
+     *
+     *  若要实现 O(k) 的算法，需要讨论当前节点和它下一个节点的关系
+     *  1.假设 x 有右树节点，后继节点必然是右树上最左的节点 （中序遍历 左 头 右）
+     *  2.如果一个节点没有右树往上找，一直找到是某一个父节点的左孩子为止
      */
     public static Node run2(Node node) {
+        if (node == null) {
+            return null;
+        }
 
-        return null;
+        if (node.right != null) {
+            Node pre = node.right;
+            while (pre.left != null) {
+                pre = pre.left;
+            }
+            System.err.println(pre);
+            return pre;
+        } else {
+            while (node.parent == node.parent.right) {
+                node = node.parent;
+            }
+            System.err.println(node.parent);
+            return node.parent;
+        }
     }
 
     public static void main(String[] args) {
@@ -95,6 +113,6 @@ public class BinaryTreeReturnNextNode {
         n2.parent = n1;
         n4.parent = n2;
 
-        System.err.println(run1(n1));
+        System.err.println(run1(n2));
     }
 }
