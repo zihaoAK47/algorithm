@@ -38,7 +38,7 @@ public class LinkedList029 {
         Node after = head;
         Node before = head.next;
         Node newNode;
-        while (after != before) {
+        while (head != before) {
             if (after.val <= insertVal && insertVal <= before.val) {
                 break;
             } else if (after.val > before.val && after.val < insertVal) {
@@ -56,6 +56,35 @@ public class LinkedList029 {
         return head;
     }
 
+    public static Node insert1(Node head, int insertVal) {
+        Node node = new Node(insertVal);
+        if (head == null) {
+            node.next = node;
+            return node;
+        }
+        if (head.next == head) {
+            head.next = node;
+            node.next = head;
+            return head;
+        }
+        Node curr = head, next = head.next;
+        while (next != head) {
+            if (insertVal >= curr.val && insertVal <= next.val) {
+                break;
+            }
+            if (curr.val > next.val) {
+                if (insertVal > curr.val || insertVal < next.val) {
+                    break;
+                }
+            }
+            curr = curr.next;
+            next = next.next;
+        }
+        curr.next = node;
+        node.next = next;
+        return head;
+    }
+
     private static Node emptyNode(int val) {
         Node head = new Node(val);
         head.next = head;
@@ -66,7 +95,7 @@ public class LinkedList029 {
         Node newNode = new Node(val);
         head.next = newNode;
         newNode.next = head;
-        return newNode;
+        return head;
     }
 
     public static void main(String[] args) {
@@ -76,6 +105,6 @@ public class LinkedList029 {
         r1.next = r2;
         r2.next = r3;
         r3.next = r1;
-        System.err.println(insert(r1, 0));
+        System.err.println(insert1(r1, 0));
     }
 }
