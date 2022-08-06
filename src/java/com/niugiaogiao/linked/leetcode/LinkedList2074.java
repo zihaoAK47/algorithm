@@ -69,7 +69,7 @@ public class LinkedList2074 {
         return head;
     }
 
-    public static ListNode reverseEvenLengthGroups(ListNode head) {
+    public static ListNode reverseEvenLengthGroups2(ListNode head) {
         if (head == null || head.next == null) {
             return head;
         }
@@ -109,16 +109,6 @@ public class LinkedList2074 {
         return head;
     }
 
-    private static boolean isFull(ListNode head, int group) {
-        int step = 0;
-        while (head != null && step < group) {
-            step++;
-            head = head.next;
-        }
-
-        return step == group;
-    }
-
     private static int getGroupNode(ListNode head, int group) {
         int step = 0;
         while (head != null && step < group) {
@@ -139,6 +129,46 @@ public class LinkedList2074 {
         }
 
         return lastNode;
+    }
+
+    public static ListNode reverseEvenLengthGroups(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        int group = 1;
+        int count = 0;
+        ListNode tempHead = head;
+        ListNode lastNode = null;
+        ListNode tempLast = null;
+        while (tempHead != null) {
+            count = 0;
+            for (int i = 0; i < group && tempHead != null; i++) {
+                count++;
+                tempLast = tempHead;
+                tempHead = tempHead.next;
+            }
+            if (count % 2 != 0) {
+                lastNode = tempLast;
+                group++;
+            } else {
+                // 反转
+                ListNode pre = null;
+                ListNode backStart = lastNode.next;
+                ListNode splitStart = lastNode.next;
+                while (splitStart != tempHead) {
+                    ListNode next = splitStart.next;
+                    splitStart.next = pre;
+                    pre = splitStart;
+                    splitStart = next;
+                }
+                lastNode.next = pre;
+                backStart.next = tempHead;
+                lastNode = backStart;
+                group++;
+            }
+        }
+
+        return head;
     }
 
     public static ListNode create(int[] data) {
