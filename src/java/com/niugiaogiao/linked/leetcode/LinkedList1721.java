@@ -27,7 +27,7 @@ public class LinkedList1721 {
         }
     }
 
-    public ListNode swapNodes1(ListNode head, int k) {
+    public static ListNode swapNodes1(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;// 因为头结点可能会发生交换，所以要构造一个哑结点
         ListNode pre1 = dummy;// pre1指向第k个节点的前一个节点
@@ -63,7 +63,7 @@ public class LinkedList1721 {
         return dummy.next;
     }
 
-    public ListNode swapNodes(ListNode head, int k) {
+    public static ListNode swapNodes(ListNode head, int k) {
         ListNode root = new ListNode();
         root.next = head;
         int k1 = k - 1;// 正数第k的前一个
@@ -105,4 +105,19 @@ public class LinkedList1721 {
         return root.next;
     }
 
+    public static ListNode createNode(int[] data) {
+        ListNode result = new ListNode(0);
+        ListNode pre = result;
+        for (int item : data) {
+            pre.next = new ListNode(item);
+            pre = pre.next;
+        }
+
+        return result.next;
+    }
+
+    public static void main(String[] args) {
+        ListNode node = createNode(new int[]{1, 2});
+        swapNodes1(node, 2);
+    }
 }
