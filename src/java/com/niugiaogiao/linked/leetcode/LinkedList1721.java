@@ -63,7 +63,7 @@ public class LinkedList1721 {
         return dummy.next;
     }
 
-    public static ListNode swapNodes(ListNode head, int k) {
+    public static ListNode swapNodes2(ListNode head, int k) {
         ListNode root = new ListNode();
         root.next = head;
         int k1 = k - 1;// 正数第k的前一个
@@ -102,6 +102,44 @@ public class LinkedList1721 {
             lk2.next = p1.next;
             p1.next = lk2;
         }
+        return root.next;
+    }
+
+    public static ListNode swapNode3(ListNode head, int k) {
+        ListNode root = new ListNode(0);
+        root.next = head;
+        ListNode lRoot = root;
+        ListNode left = lRoot.next;
+        ListNode lRight = root;
+        ListNode right = lRight.next;
+
+        for (int i = 1; i < k; i++) {
+            lRoot = lRoot.next;
+            left = left.next;
+        }
+        ListNode cur = left;
+        ListNode temp = cur.next;
+        while (cur.next != null) {
+            lRight = lRight.next;
+            right = right.next;
+            cur = cur.next;
+        }
+        // 第一种情况 前一个 k 的左边节点就是 k 的后一个节点
+        if (right == lRoot) {
+            right.next = temp;
+            left.next = right;
+            lRight.next = left;
+        } else {
+            left.next = right.next;
+            if (lRight == left) {
+                right.next = left;
+            } else {
+                lRight.next = left;
+                right.next = temp;
+            }
+            lRoot.next = right;
+        }
+
         return root.next;
     }
 
