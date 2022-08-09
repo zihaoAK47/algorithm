@@ -135,23 +135,39 @@ public class LinkedList2074 {
         if (head == null || head.next == null) {
             return head;
         }
+        // 代表当前第几组
         int group = 1;
+        // 记录每组多少个节点
         int count = 0;
         ListNode tempHead = head;
+        // 每组最后一个节点
         ListNode lastNode = null;
+        // 当前组最后一个节点
         ListNode tempLast = null;
         while (tempHead != null) {
             count = 0;
+            /**
+             * 划分组成员，根据提议得知每个的成员数不会超过组数
+             * 循环结束后会得到如下信息
+             * 1. 当前组的成员数量
+             * 2. 当前组的最后一个节点
+             */
             for (int i = 0; i < group && tempHead != null; i++) {
                 count++;
                 tempLast = tempHead;
                 tempHead = tempHead.next;
             }
+            /**
+             * 成员数量为奇数的组不进行翻转，但是需要记录该组的最后一个成员节点
+             */
             if (count % 2 != 0) {
                 lastNode = tempLast;
-                group++;
             } else {
-                // 反转
+                /**
+                 * 偶数组进行反转操作，反转结束后需要更新偶数组的最后一个节点
+                 * tempHead 此时指向的是下一组开始的位置
+                 * 奇数组的第一个节点用 backStart 备份，翻转后需要她指向 tempHead
+                 */
                 ListNode pre = null;
                 ListNode backStart = lastNode.next;
                 ListNode splitStart = lastNode.next;
@@ -164,8 +180,8 @@ public class LinkedList2074 {
                 lastNode.next = pre;
                 backStart.next = tempHead;
                 lastNode = backStart;
-                group++;
             }
+            group++;
         }
 
         return head;
