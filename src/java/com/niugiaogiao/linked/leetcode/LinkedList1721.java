@@ -143,6 +143,47 @@ public class LinkedList1721 {
         return root.next;
     }
 
+    public static ListNode swapNode4(ListNode head, int k) {
+        ListNode newHead = new ListNode(0);
+        newHead.next = head;
+        ListNode lRoot = newHead;
+        ListNode left = head;
+        ListNode rRoot = newHead;
+        ListNode right = head;
+        for (int i = 1; i < k; i++) {
+            lRoot = lRoot.next;
+            left = left.next;
+        }
+        ListNode cur = left;
+        ListNode temp = left.next;
+        while (cur.next != null) {
+            cur = cur.next;
+            rRoot = rRoot.next;
+            right = right.next;
+        }
+
+        if (left == right) {
+            return newHead.next;
+        }
+
+        if (right == lRoot) {
+            left.next = right;
+            right.next = temp;
+            rRoot.next = left;
+        } else {
+            left.next = right.next;
+            if (rRoot == left) {
+                right.next = left;
+            } else {
+                rRoot.next = left;
+                right.next = temp;
+            }
+            lRoot.next = right;
+        }
+
+        return newHead.next;
+    }
+
     public static ListNode createNode(int[] data) {
         ListNode result = new ListNode(0);
         ListNode pre = result;
@@ -156,6 +197,6 @@ public class LinkedList1721 {
 
     public static void main(String[] args) {
         ListNode node = createNode(new int[]{1, 2});
-        swapNodes1(node, 2);
+        swapNode4(node, 2);
     }
 }
