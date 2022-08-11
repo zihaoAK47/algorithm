@@ -25,4 +25,97 @@ package com.niugiaogiao.tree.other;
  * @date 2022-08-11 22:42
  */
 public class BinaryTreeMaxSearchTreeHeadNode {
+
+    static class Node {
+        public Node left;
+        public Node right;
+        public int val;
+    }
+
+    static class Info {
+        public boolean isBST;
+        public int nodeSize;
+        public int leftMax;
+        public int rightMin;
+
+        public Info(boolean isBST, int nodeSize, int leftMax, int rightMin) {
+        }
+
+        public boolean isBST() {
+            return isBST;
+        }
+
+        public void setBST(boolean BST) {
+            isBST = BST;
+        }
+
+        public int getNodeSize() {
+            return nodeSize;
+        }
+
+        public void setNodeSize(int nodeSize) {
+            this.nodeSize = nodeSize;
+        }
+
+        public int getLeftMax() {
+            return leftMax;
+        }
+
+        public void setLeftMax(int leftMax) {
+            this.leftMax = leftMax;
+        }
+
+        public int getRightMin() {
+            return rightMin;
+        }
+
+        public void setRightMin(int rightMin) {
+            this.rightMin = rightMin;
+        }
+    }
+
+    public static Info process(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Info process1 = process(head.left);
+        Info process2 = process(head.right);
+        int leftMax = head.val;
+        int rightMin = head.val;
+        if (process1 != null) {
+            leftMax = Math.max(leftMax, process1.leftMax);
+            rightMin = Math.min(leftMax, process1.rightMin);
+        }
+        if (process2 != null) {
+            leftMax = Math.max(leftMax, process2.leftMax);
+            rightMin = Math.min(leftMax, process2.rightMin);
+        }
+        int nodeSize = 0;
+        if (process1 != null) {
+            nodeSize = process1.nodeSize;
+        }
+        if (process2 != null) {
+            nodeSize = Math.max(nodeSize, process2.nodeSize);
+        }
+
+        boolean isBST = false;
+        if ((process1 == null ? true : process1.isBST) &&
+                (process2 == null ? true : process2.isBST) &&
+                (process1 == null ? true : process1.leftMax < head.val)
+                &&
+                (process2 == null ? true : process2.rightMin > head.val)
+        ) {
+            isBST = true;
+            nodeSize =
+                    (process1 == null ? 0 : process1.nodeSize)
+                            +
+                            (process2 == null ? 0 : process2.nodeSize)
+                            + nodeSize;
+        }
+
+
+        return new Info(isBST, nodeSize, leftMax, rightMin);
+    }
+
+
 }
