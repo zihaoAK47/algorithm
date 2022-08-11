@@ -16,6 +16,7 @@ public class BinaryTreeNodeMaxDistance {
     static class Node {
         public Node left;
         public Node right;
+        public int val;
     }
 
     static class Info {
@@ -30,7 +31,7 @@ public class BinaryTreeNodeMaxDistance {
         @Override
         public String toString() {
             return "Info{" +
-                    "isBalance=" + max +
+                    "max=" + max +
                     ", height=" + height +
                     '}';
         }
@@ -43,11 +44,37 @@ public class BinaryTreeNodeMaxDistance {
         Info process1 = process(head.left);
         Info process2 = process(head.right);
         int selfHeight = Math.max(process1.height, process2.height) + 1;
-        int maxDistance = Math.max(
-                Math.max(process1.max, process2.max),
-                process1.height + process2.height + 1
-        );
+        int max = Math.max(Math.max(process1.max, process2.max), process1.height + process2.height + 1);
+        return new Info(max, selfHeight);
+    }
 
-        return new Info(maxDistance, selfHeight);
+    public static void main(String[] args) {
+        Node r1 = new Node();
+        Node r2 = new Node();
+        Node r3 = new Node();
+        Node r4 = new Node();
+        Node r5 = new Node();
+        Node r6 = new Node();
+        Node r7 = new Node();
+        Node r8 = new Node();
+        Node r9 = new Node();
+        r1.val = 1;
+        r2.val = 2;
+        r3.val = 3;
+        r4.val = 4;
+        r5.val = 5;
+        r6.val = 6;
+        r7.val = 7;
+        r8.val = 8;
+        r9.val = 9;
+        r1.left = r2;
+        r1.right = r3;
+        r2.left = r4;
+        r2.right = r5;
+        r3.left = r6;
+        r3.right = r7;
+        r6.left = r8;
+        r7.left = r9;
+        System.err.println(process(r1));
     }
 }
