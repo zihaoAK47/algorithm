@@ -144,28 +144,52 @@ public class LinkedList1721 {
     }
 
     public static ListNode swapNode4(ListNode head, int k) {
+        // 新节点
         ListNode newHead = new ListNode(0);
         newHead.next = head;
+        /**
+         * 正序 k 节点的链表位置
+         * 正序 k 前一个节点 lRoot
+         * 正序 k 节点 left
+         */
         ListNode lRoot = newHead;
         ListNode left = head;
+        /**
+         * 倒叙 k 节点的链表位置
+         * 倒叙 k 节点 rRoot上一个
+         * 倒叙 k 节点 right
+         */
         ListNode rRoot = newHead;
         ListNode right = head;
+        /**
+         * 该循环执行后会找到正序 k 位置的节点以及正序 k 上一个的节点
+         */
         for (int i = 1; i < k; i++) {
             lRoot = lRoot.next;
             left = left.next;
         }
+        /**
+         * 该循环执行后会找到倒叙 k 位置的节点以及倒叙 k 位置节点的上一个
+         */
         ListNode cur = left;
+        // 记录正序 k 节点位置的下一个节点信息
         ListNode temp = left.next;
         while (cur.next != null) {
             cur = cur.next;
             rRoot = rRoot.next;
             right = right.next;
         }
-
+        /**
+         * 若 正序 k 节点和倒叙 k 节点指向相同的位置
+         * 此时交换节点信息是和自己交换，可以之间返回不进行任何交换
+         */
         if (left == right) {
             return newHead.next;
         }
 
+        /**
+         * 若倒叙 k 节点指向的位置和 正序 k 节点的上一个节点一样，说明该交换的数据是类似这种
+         */
         if (right == lRoot) {
             left.next = right;
             right.next = temp;
