@@ -30,6 +30,10 @@ public class BinaryTreeMaxSearchTreeHeadNode {
         public Node left;
         public Node right;
         public int val;
+
+        Node(int val) {
+            this.val = val;
+        }
     }
 
     static class Info {
@@ -38,39 +42,25 @@ public class BinaryTreeMaxSearchTreeHeadNode {
         public int leftMax;
         public int rightMin;
 
-        public Info(boolean isBST, int nodeSize, int leftMax, int rightMin) {
-        }
+        public Node root;
 
-        public boolean isBST() {
-            return isBST;
-        }
-
-        public void setBST(boolean BST) {
-            isBST = BST;
-        }
-
-        public int getNodeSize() {
-            return nodeSize;
-        }
-
-        public void setNodeSize(int nodeSize) {
+        public Info(boolean isBST, int nodeSize, int leftMax, int rightMin, Node root) {
+            this.isBST = isBST;
             this.nodeSize = nodeSize;
-        }
-
-        public int getLeftMax() {
-            return leftMax;
-        }
-
-        public void setLeftMax(int leftMax) {
             this.leftMax = leftMax;
-        }
-
-        public int getRightMin() {
-            return rightMin;
-        }
-
-        public void setRightMin(int rightMin) {
             this.rightMin = rightMin;
+            this.root = root;
+        }
+
+        @Override
+        public String toString() {
+            return "Info{" +
+                    "isBST=" + isBST +
+                    ", nodeSize=" + nodeSize +
+                    ", leftMax=" + leftMax +
+                    ", rightMin=" + rightMin +
+                    ", root=" + root +
+                    '}';
         }
     }
 
@@ -84,21 +74,22 @@ public class BinaryTreeMaxSearchTreeHeadNode {
         int rightMin = head.val;
         if (process1 != null) {
             leftMax = Math.max(leftMax, process1.leftMax);
-            rightMin = Math.min(leftMax, process1.rightMin);
+            rightMin = Math.min(rightMin, process1.rightMin);
         }
         if (process2 != null) {
             leftMax = Math.max(leftMax, process2.leftMax);
-            rightMin = Math.min(leftMax, process2.rightMin);
+            rightMin = Math.min(rightMin, process2.rightMin);
         }
         int nodeSize = 0;
         if (process1 != null) {
-            nodeSize = process1.nodeSize;
+            nodeSize = Math.max(nodeSize, process1.nodeSize);
         }
         if (process2 != null) {
             nodeSize = Math.max(nodeSize, process2.nodeSize);
         }
 
         boolean isBST = false;
+        Node root = null;
         if ((process1 == null ? true : process1.isBST) &&
                 (process2 == null ? true : process2.isBST) &&
                 (process1 == null ? true : process1.leftMax < head.val)
@@ -106,16 +97,80 @@ public class BinaryTreeMaxSearchTreeHeadNode {
                 (process2 == null ? true : process2.rightMin > head.val)
         ) {
             isBST = true;
-            nodeSize =
-                    (process1 == null ? 0 : process1.nodeSize)
-                            +
-                            (process2 == null ? 0 : process2.nodeSize)
-                            + nodeSize;
+            root = head;
+            nodeSize = (process1 == null ? 0 : process1.nodeSize) + (process2 == null ? 0 : process2.nodeSize) + 1;
         }
 
 
-        return new Info(isBST, nodeSize, leftMax, rightMin);
+        return new Info(isBST, nodeSize, leftMax, rightMin, root);
     }
 
+    /**
+     * 1.收集最大子二叉搜索树的节点个数
+     * 2.收集最大子二叉搜索树的头节点
+     *
+     * @param head
+     * @return
+     */
+    public static Info process1(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Info process1 = process1(head.left);
+        Info process2 = process1(head.right);
+        int leftMax = head.val;
+        int rightMin = head.val;
+        leftMax = process1 != null ? Math.max(leftMax, process1.leftMax) : leftMax;
+        leftMax = process2 != null ? Math.max(leftMax, process2.leftMax) : leftMax;
+        rightMin = process1 != null ? Math.min(rightMin, process1.rightMin) : rightMin;
+        rightMin = process2 != null ? Math.min(rightMin, process2.rightMin) : rightMin;
 
+        int nodeSize = 0;
+        if (process1 != null) {
+            nodeSize = Math.max(nodeSize, process1.nodeSize);
+        }
+        if (process2 != null) {
+            nodeSize = Math.max(nodeSize, process2.nodeSize);
+        }
+
+        Node root = null;
+        boolean isBst = false;
+        if ((process1 == null || process1.isBST)
+                && (process2 == null || process2.isBST)
+                && (process1 == null || process1.leftMax < head.val)
+                && (process2 == null || process2.rightMin > head.val)) {
+            isBst = true;
+            root = head;
+            nodeSize = (process1 == null ? 0 : process1.nodeSize)
+                    + (process2 == null ? 0 : process2.nodeSize)
+                    + 1;
+        }
+
+        if (root == null && process1 != null && process2 != null && process1.isBST && process2.isBST) {
+            root = (process1.nodeSize > process2.nodeSize) ? process1.root : process2.root;
+        }
+
+        return new Info(isBst, nodeSize, leftMax, rightMin, root);
+    }
+
+    public static void main(String[] args) {
+        Node r1 = new Node(1);
+        Node r2 = new Node(2);
+        Node r3 = new Node(3);
+        Node r4 = new Node(4);
+        Node r5 = new Node(5);
+        Node r6 = new Node(6);
+        Node r7 = new Node(7);
+        Node r8 = new Node(8);
+        r1.left = r3;
+        r1.right = r7;
+        r3.left = r2;
+        r3.right = r4;
+        r7.left = r6;
+        r7.right = r8;
+        r6.left = r5;
+
+        Info info = process1(r1);
+        System.err.println("");
+    }
 }
