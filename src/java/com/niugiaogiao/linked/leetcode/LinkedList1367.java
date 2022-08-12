@@ -11,6 +11,9 @@ package com.niugiaogiao.linked.leetcode;
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode.cn/problems/linked-list-in-binary-tree
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ *
+ * @author zihao
+ * @date 2022-08-12
  */
 public class LinkedList1367 {
 
