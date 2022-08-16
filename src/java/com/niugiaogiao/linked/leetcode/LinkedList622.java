@@ -114,6 +114,51 @@ public class LinkedList622 {
         }
     }
 
+    static class MyCircularQueue1 {
+        int[] data;
+        int maxSize;
+        int back;
+        int head;
+
+        public MyCircularQueue1(int size) {
+            this.maxSize = size;
+            this.data = new int[this.maxSize];
+        }
+
+        public boolean enQueue(int value) {
+            if (isFull()) {
+                return false;
+            }
+            data[back] = back;
+            back = (back + 1) % maxSize;
+            return true;
+        }
+
+        public boolean deQueue() {
+            if (isEmpty()) {
+                return false;
+            }
+            head = (head + 1) % maxSize;
+            return true;
+        }
+
+        public int Front() {
+            return data[head];
+        }
+
+        public int Rear() {
+            return data[back];
+        }
+
+        public boolean isEmpty() {
+            return head == back;
+        }
+
+        public boolean isFull() {
+            return (this.back + 1) % maxSize == this.head;
+        }
+    }
+
     public static void main1(String[] args) {
         MyCircularQueue myCircularQueue = new MyCircularQueue(8);
         System.err.println(myCircularQueue.enQueue(3));
@@ -137,7 +182,8 @@ public class LinkedList622 {
             int dataSize = random.nextInt(10000);
             int operator = random.nextInt(1000);
             LinkedList<Integer> list = new LinkedList<>();
-            MyCircularQueue myCircularQueue = new MyCircularQueue(dataSize);
+//            MyCircularQueue myCircularQueue = new MyCircularQueue(dataSize);
+            MyCircularQueue1 myCircularQueue = new MyCircularQueue1(dataSize);
             for (int j = 0; j < operator; j++) {
                 int choose = random.nextInt(4);
                 switch (choose) {
