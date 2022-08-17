@@ -46,7 +46,7 @@ public class LinkedList707 {
         }
 
         public int get(int index) {
-            if (size == 0 && head == null) {
+            if (head == null || index >= size) {
                 return -1;
             }
             SingleLinkedListData headTemp = head;
@@ -112,17 +112,17 @@ public class LinkedList707 {
         }
 
         public void deleteAtIndex(int index) {
-            // input error
-            if (index < 0 || index == size) {
+            if (index < 0 || index >= size || head == null) {
                 return;
             }
             size--;
-            if (index == 0 && size == 0) {
-                // remove head
+            if (size == 0) {
                 head = null;
                 end = null;
                 return;
-            } else if (index == 0) {
+            }
+            // is del head
+            if (index == 0) {
                 head = head.next;
                 end.next = head;
                 return;
@@ -134,6 +134,9 @@ public class LinkedList707 {
                 tempHead = tempHead.next;
             }
             tempHead.next = tempHead.next.next;
+            if (tempHead.next == head) {
+                end = tempHead;
+            }
         }
     }
 
@@ -166,38 +169,37 @@ public class LinkedList707 {
     }
 
     public static void main(String[] args) {
-        //  ["MyLinkedList","addAtHead","deleteAtIndex","addAtHead","addAtHead","addAtHead","addAtHead","addAtHead","addAtTail","get","deleteAtIndex","deleteAtIndex"]
-        //  [[],[2],[1],[2],[7],[3],[2],[5],[5],[5],[6],[4]]
-        // [null,null,null,null,null,null,null,null,null,5,null,null]
-        // [null,null,null,null,null,null,null,null,null,2,null,null]
+        // ["deleteAtIndex","deleteAtIndex","get","deleteAtIndex","get"]
+        // [[3],[0],[0],[0],[0]]
         MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.addAtIndex(0, 1);
-        myLinkedList.addAtIndex(0, 2);
-//        myLinkedList.addAtHead(2);
-//        myLinkedList.addAtHead(7);
-//        myLinkedList.addAtHead(3);
-//        myLinkedList.addAtHead(2);
-//        myLinkedList.addAtHead(5);
-//        myLinkedList.addAtTail(5);
-//        myLinkedList.get(5);
-//        myLinkedList.deleteAtIndex(6);
-//        myLinkedList.deleteAtIndex(4);
-        System.err.println("");
+        myLinkedList.addAtHead(1);
+        myLinkedList.addAtTail(3);
+        myLinkedList.addAtIndex(1, 2);
+        System.err.println(myLinkedList.get(1));
+        myLinkedList.deleteAtIndex(1);
+        System.err.println(myLinkedList.get(1));
+        System.err.println(myLinkedList.get(3));
+        myLinkedList.deleteAtIndex(3);
+        myLinkedList.deleteAtIndex(0);
+        System.err.println(myLinkedList.get(0));
+        myLinkedList.deleteAtIndex(0);
+        System.err.println(myLinkedList.get(0));
     }
 
     public static void main1(String[] args) {
-        int testCount = 1000;
+        int testCount = 100000;
+        int successCount = 0;
+        int errorCount = 0;
+        int operatorSuccess = 0;
         Random random = new Random();
         for (int i = 0; i < testCount; i++) {
             int operatorCount = random.nextInt(1000);
             LinkedList<Integer> list = new LinkedList<>();
             MyLinkedList myLinkedList = new MyLinkedList();
-            StringBuffer operator = new StringBuffer();
             for (int j = 0; j < operatorCount; j++) {
                 int choose = random.nextInt(5);
                 switch (choose) {
                     case 0:
-                        operator.append("add head");
                         // add head
                         int insertHead = random.nextInt(1000);
                         list.addFirst(insertHead);
@@ -205,61 +207,57 @@ public class LinkedList707 {
                         break;
                     case 1:
                         // add tail
-                        operator.append("add tail");
                         int insertTail = random.nextInt(1000);
                         list.addLast(insertTail);
                         myLinkedList.addAtTail(insertTail);
                         break;
                     case 2:
                         // get index
-                        System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>.");
-                        System.err.println(operator);
-                        System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>.");
-                        operator = new StringBuffer();
-                        if (list.isEmpty() && myLinkedList.singleLinkedList.size == 0) {
+                        if (myLinkedList.singleLinkedList.head == null) {
                             continue;
                         }
                         int randData = random.nextInt(myLinkedList.singleLinkedList.size);
-                        System.err.println("list >" + list.get(randData) + " my >" + myLinkedList.get(randData));
                         if (list.get(randData) != myLinkedList.get(randData)) {
                             System.err.println("get error");
                         }
                         break;
                     case 3:
                         // add index
-                        operator.append("add index");
-                        if (myLinkedList.singleLinkedList.size == 0) {
-                            myLinkedList.addAtIndex(random.nextInt(999), random.nextInt(9999));
-                        } else {
-                            int index = random.nextInt(1000);
-                            int insertData = random.nextInt(1000);
+                        if (myLinkedList.singleLinkedList.head == null) {
+                            continue;
+                        }
+                        int index = random.nextInt(1000);
+                        int insertData = random.nextInt(1000);
+                        if (index < myLinkedList.singleLinkedList.size) {
                             myLinkedList.addAtIndex(index, insertData);
-                            if (index < myLinkedList.singleLinkedList.size) {
-                                list.add(index, insertData);
-                            }
+                            list.add(index, insertData);
                         }
                         break;
                     case 4:
                         // remove index
-                        operator.append("remove index");
-                        if (myLinkedList.singleLinkedList.size == 0) {
-                            myLinkedList.deleteAtIndex(random.nextInt(9999));
-                        } else {
-                            int removeIndex = random.nextInt(myLinkedList.singleLinkedList.size);
-                            list.remove(removeIndex);
+                        if (myLinkedList.singleLinkedList.head == null) {
+                            continue;
+                        }
+                        int removeIndex = random.nextInt(myLinkedList.singleLinkedList.size);
+                        if (removeIndex < myLinkedList.singleLinkedList.size) {
                             myLinkedList.deleteAtIndex(removeIndex);
+                            list.remove(removeIndex);
                         }
                         break;
                 }
             }
             while (!list.isEmpty() && myLinkedList.singleLinkedList.size != 0) {
-                if (list.getFirst() != myLinkedList.get(1)) {
+                if (list.getFirst() != myLinkedList.get(0)) {
                     System.err.println("loop error");
+                    errorCount++;
                     return;
                 }
                 list.removeFirst();
                 myLinkedList.deleteAtIndex(0);
             }
+            operatorSuccess += operatorCount;
+            successCount++;
         }
+        System.err.println("testCount: " + testCount + " successCount: " + successCount + " operatorSuccess: " + operatorSuccess);
     }
 }
