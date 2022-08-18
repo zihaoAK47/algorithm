@@ -31,9 +31,6 @@ public class LinkedList707 {
         }
     }
 
-    /**
-     * 单向链表
-     */
     static class SingleLinkedList {
         int size;
         /**
@@ -168,25 +165,7 @@ public class LinkedList707 {
         }
     }
 
-    public static void main(String[] args) {
-        // ["deleteAtIndex","deleteAtIndex","get","deleteAtIndex","get"]
-        // [[3],[0],[0],[0],[0]]
-        MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.addAtHead(1);
-        myLinkedList.addAtTail(3);
-        myLinkedList.addAtIndex(1, 2);
-        System.err.println(myLinkedList.get(1));
-        myLinkedList.deleteAtIndex(1);
-        System.err.println(myLinkedList.get(1));
-        System.err.println(myLinkedList.get(3));
-        myLinkedList.deleteAtIndex(3);
-        myLinkedList.deleteAtIndex(0);
-        System.err.println(myLinkedList.get(0));
-        myLinkedList.deleteAtIndex(0);
-        System.err.println(myLinkedList.get(0));
-    }
-
-    public static void main1(String[] args) {
+    public static void myLinkedListTest(String[] args) {
         int testCount = 100000;
         int successCount = 0;
         int errorCount = 0;
@@ -247,6 +226,286 @@ public class LinkedList707 {
                 }
             }
             while (!list.isEmpty() && myLinkedList.singleLinkedList.size != 0) {
+                if (list.getFirst() != myLinkedList.get(0)) {
+                    System.err.println("loop error");
+                    errorCount++;
+                    return;
+                }
+                list.removeFirst();
+                myLinkedList.deleteAtIndex(0);
+            }
+            operatorSuccess += operatorCount;
+            successCount++;
+        }
+        System.err.println("testCount: " + testCount + " successCount: " + successCount + " operatorSuccess: " + operatorSuccess);
+    }
+
+    static class DoubleLinkedList {
+        public int size;
+        public DoubleLinkedListData next;
+        public DoubleLinkedListData prev;
+
+        public int get(int index) {
+            if (index >= size || next == null || prev == null) {
+                return -1;
+            }
+            int position = 0;
+            if (index > size / 2) {
+                // 前驱遍历
+                position = size - 1;
+                DoubleLinkedListData tempPrev = prev;
+                while (position != index) {
+                    position--;
+                    tempPrev = tempPrev.prev;
+                }
+                return tempPrev.val;
+            } else {
+                // 后续遍历
+                DoubleLinkedListData tempNext = next;
+                while (position != index) {
+                    position++;
+                    tempNext = tempNext.next;
+                }
+                return tempNext.val;
+            }
+        }
+
+        public void addAtHead(int val) {
+            size++;
+            DoubleLinkedListData newData = new DoubleLinkedListData(val);
+            if (next == null || prev == null) {
+                next = newData;
+                prev = newData;
+                return;
+            }
+            next.prev = newData;
+            newData.next = next;
+            next = newData;
+        }
+
+        public void addAtTail(int val) {
+            size++;
+            DoubleLinkedListData newData = new DoubleLinkedListData(val);
+            if (next == null || prev == null) {
+                next = newData;
+                prev = newData;
+                return;
+            }
+            prev.next = newData;
+            newData.prev = prev;
+            prev = newData;
+        }
+
+        public void addAtIndex(int index, int val) {
+            if (index > size) {
+                return;
+            }
+            // head insert
+            if (index <= 0) {
+                addAtHead(val);
+                return;
+            }
+            // tail insert
+            if (index == size) {
+                addAtTail(val);
+                return;
+            }
+
+            int position = 1;
+            DoubleLinkedListData newData = new DoubleLinkedListData(val);
+            if (index > size / 2) {
+                // prev insert
+                position = size;
+                DoubleLinkedListData tempPre = prev;
+                while (position != index) {
+                    position--;
+                    tempPre = tempPre.prev;
+                }
+                newData.next = tempPre.next;
+                newData.prev = tempPre;
+                tempPre.next = newData;
+                newData.next.prev = newData;
+            } else {
+                // head insert
+                DoubleLinkedListData tempNext = next;
+                while (position != index) {
+                    position++;
+                    tempNext = tempNext.next;
+                }
+                newData.next = tempNext.next;
+                newData.prev = tempNext;
+                tempNext.next = newData;
+                newData.next.prev = newData;
+            }
+            size++;
+        }
+
+        public void deleteAtIndex(int index) {
+            if (index >= size || next == null || prev == null) {
+                return;
+            }
+            // remove head and next prev is null.
+            if (size - 1 == 0 && index == 0) {
+                size--;
+                next = prev = null;
+                return;
+            }
+            if (index == 0) {
+                // remove head
+                size--;
+                next = next.next;
+                next.prev = null;
+                return;
+            }
+            if (index == size - 1) {
+                // remove prev
+                size--;
+                prev = prev.prev;
+                prev.next = null;
+                return;
+            }
+
+            int position = 1;
+            if (index > size / 2) {
+                position = size;
+                DoubleLinkedListData tempPrev = prev;
+                while (position != index) {
+                    position--;
+                    tempPrev = tempPrev.prev;
+                }
+                tempPrev.next.next.prev = tempPrev;
+                tempPrev.next = tempPrev.next.next;
+            } else {
+                DoubleLinkedListData tempNext = next;
+                while (position != index) {
+                    position++;
+                    tempNext = tempNext.next;
+                }
+                tempNext.next.next.prev = tempNext;
+                tempNext.next = tempNext.next.next;
+            }
+            size--;
+        }
+
+        static class DoubleLinkedListData {
+            public int val;
+            public DoubleLinkedListData next;
+            private DoubleLinkedListData prev;
+
+            public DoubleLinkedListData(int val) {
+                this.val = val;
+            }
+        }
+    }
+
+    static class MyLinkedList1 {
+
+        DoubleLinkedList doubleLinkedList;
+
+        public MyLinkedList1() {
+            doubleLinkedList = new DoubleLinkedList();
+        }
+
+        public int get(int index) {
+            return doubleLinkedList.get(index);
+        }
+
+        public void addAtHead(int val) {
+            doubleLinkedList.addAtHead(val);
+        }
+
+        public void addAtTail(int val) {
+            doubleLinkedList.addAtTail(val);
+        }
+
+        public void addAtIndex(int index, int val) {
+            doubleLinkedList.addAtIndex(index, val);
+        }
+
+        public void deleteAtIndex(int index) {
+            doubleLinkedList.deleteAtIndex(index);
+        }
+    }
+
+    public static void main(String[] args) {
+        // ["deleteAtIndex","deleteAtIndex","get","deleteAtIndex","get"]
+        // [[3],[0],[0],[0],[0]]
+        MyLinkedList1 myLinkedList = new MyLinkedList1();
+        myLinkedList.addAtHead(1);
+        myLinkedList.addAtTail(3);
+        myLinkedList.addAtIndex(1, 2);
+        myLinkedList.get(1);
+        myLinkedList.deleteAtIndex(1);
+        myLinkedList.get(1);
+        myLinkedList.get(3);
+        myLinkedList.deleteAtIndex(3);
+        myLinkedList.deleteAtIndex(0);
+        myLinkedList.get(0);
+        myLinkedList.deleteAtIndex(0);
+        myLinkedList.get(0);
+    }
+
+    public static void main1(String[] args) {
+        int testCount = 10000;
+        int successCount = 0;
+        int errorCount = 0;
+        int operatorSuccess = 0;
+        Random random = new Random();
+        for (int i = 0; i < testCount; i++) {
+            int operatorCount = random.nextInt(10000);
+            LinkedList<Integer> list = new LinkedList<>();
+            MyLinkedList1 myLinkedList = new MyLinkedList1();
+            for (int j = 0; j < operatorCount; j++) {
+                int choose = random.nextInt(5);
+                switch (choose) {
+                    case 0:
+                        // add head
+                        int insertHead = random.nextInt(1000);
+                        list.addFirst(insertHead);
+                        myLinkedList.addAtHead(insertHead);
+                        break;
+                    case 1:
+                        // add tail
+                        int insertTail = random.nextInt(1000);
+                        list.addLast(insertTail);
+                        myLinkedList.addAtTail(insertTail);
+                        break;
+                    case 2:
+                        // get index
+                        if (myLinkedList.doubleLinkedList.next == null) {
+                            continue;
+                        }
+                        int randData = random.nextInt(myLinkedList.doubleLinkedList.size);
+                        if (list.get(randData) != myLinkedList.get(randData)) {
+                            System.err.println("get error");
+                        }
+                        break;
+                    case 3:
+                        // add index
+                        if (myLinkedList.doubleLinkedList.next == null) {
+                            continue;
+                        }
+                        int index = random.nextInt(1000);
+                        int insertData = random.nextInt(1000);
+                        if (index < myLinkedList.doubleLinkedList.size) {
+                            myLinkedList.addAtIndex(index, insertData);
+                            list.add(index, insertData);
+                        }
+                        break;
+                    case 4:
+                        // remove index
+                        if (myLinkedList.doubleLinkedList.next == null) {
+                            continue;
+                        }
+                        int removeIndex = random.nextInt(myLinkedList.doubleLinkedList.size);
+                        if (removeIndex < myLinkedList.doubleLinkedList.size) {
+                            myLinkedList.deleteAtIndex(removeIndex);
+                            list.remove(removeIndex);
+                        }
+                        break;
+                }
+            }
+            while (!list.isEmpty() && myLinkedList.doubleLinkedList.size != 0) {
                 if (list.getFirst() != myLinkedList.get(0)) {
                     System.err.println("loop error");
                     errorCount++;
