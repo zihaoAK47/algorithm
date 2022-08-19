@@ -1,6 +1,8 @@
 package com.niugiaogiao.linked.leetcode;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -93,6 +95,27 @@ public class LinkedList2130 {
             max = Math.max(max, head.val + mid.val);
             head = head.next;
             mid = mid.next;
+        }
+
+        return max;
+    }
+
+    public static int pairSum2(ListNode head) {
+        if(head == null || head.next == null) {
+            return head == null ? 0 : head.val;
+        }
+        Deque<Integer> deque = new LinkedList<>();
+        ListNode temp = head;
+        while (temp != null) {
+            deque.addLast(temp.val);
+            temp = temp.next;
+        }
+
+        int max = 0;
+        while (!deque.isEmpty()) {
+            max = Math.max(max, deque.getFirst() + deque.getLast());
+            deque.pollLast();
+            deque.pollFirst();
         }
 
         return max;
