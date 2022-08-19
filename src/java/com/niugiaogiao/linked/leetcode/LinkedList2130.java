@@ -1,9 +1,6 @@
 package com.niugiaogiao.linked.leetcode;
 
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 在一个大小为 n 且 n 为 偶数 的链表中，对于 0 <= i <= (n / 2) - 1 的 i ，第 i 个节点（下标从 0 开始）的孪生节点为第 (n-1-i) 个节点 。
@@ -101,7 +98,7 @@ public class LinkedList2130 {
     }
 
     public static int pairSum2(ListNode head) {
-        if(head == null || head.next == null) {
+        if (head == null || head.next == null) {
             return head == null ? 0 : head.val;
         }
         Deque<Integer> deque = new LinkedList<>();
@@ -118,6 +115,23 @@ public class LinkedList2130 {
             deque.pollFirst();
         }
 
+        return max;
+    }
+
+    public static int pairSum3(ListNode head) {
+        if (head == null || head.next == null) {
+            return head == null ? 0 : head.val;
+        }
+        List<Integer> list = new ArrayList<>();
+        ListNode temp = head;
+        while (temp != null) {
+            list.add(temp.val);
+            temp = temp.next;
+        }
+        int max = 0;
+        for (int i = 0; i < list.size() / 2; i++) {
+            max = Math.max(max, list.get(i) + list.get(list.size() - 1 - i));
+        }
         return max;
     }
 
