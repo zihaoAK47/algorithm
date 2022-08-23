@@ -62,7 +62,6 @@ public class LinkedList1472 {
         }
     }
 
-
     static class BrowserHistory1 {
         int position = 0;
         int sizeCount = 0;
@@ -140,8 +139,49 @@ public class LinkedList1472 {
         }
     }
 
+    static class BrowserHistory3 {
+        int position = 0;
+        int sizeCount = 0;
+        String[] historyData = new String[101];
+
+        public BrowserHistory3(String homepage) {
+            if (isEmpty((homepage))) {
+                return;
+            }
+
+            historyData[position] = homepage;
+            position++;
+            sizeCount++;
+        }
+
+        public void visit(String url) {
+            if (isEmpty((url))) {
+                return;
+            }
+            historyData[position] = url;
+            position++;
+            sizeCount = position;
+        }
+
+        public String back(int steps) {
+            position = Math.max(position - steps, 0);
+            position = position == 0 ? 1 : position;
+            return historyData[position - 1];
+        }
+
+        public String forward(int steps) {
+            position = Math.min(position + steps, sizeCount);
+            return historyData[position - 1];
+        }
+
+        public boolean isEmpty(String page) {
+            return page == null || page.length() == 0;
+        }
+    }
+
+
     public static void main(String[] args) {
-        BrowserHistory1 browserHistory = new BrowserHistory1("leetcode.com");
+        BrowserHistory3 browserHistory = new BrowserHistory3("leetcode.com");
         browserHistory.visit("google.com");
         browserHistory.visit("facebook.com");
         browserHistory.visit("youtube.com");
