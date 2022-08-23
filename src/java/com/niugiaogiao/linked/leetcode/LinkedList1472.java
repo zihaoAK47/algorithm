@@ -62,8 +62,86 @@ public class LinkedList1472 {
         }
     }
 
-    public static void main1(String[] args) {
-        BrowserHistory browserHistory = new BrowserHistory("leetcode.com");
+
+    static class BrowserHistory1 {
+        int position = 0;
+        int sizeCount = 0;
+        HistoryData head = new HistoryData(null);
+        HistoryData pre = head;
+        HistoryData cur = pre;
+
+        static class HistoryData {
+            public String url;
+            public HistoryData next;
+            public HistoryData(String url) {
+                this.url = url;
+            }
+        }
+
+        public BrowserHistory1(String homepage) {
+            if (isEmpty((homepage))) {
+                return;
+            }
+
+            position++;
+            sizeCount++;
+            pre.next = new HistoryData(homepage);
+            pre = pre.next;
+            cur = pre;
+        }
+
+        public void visit(String url) {
+            if (isEmpty((url))) {
+                return;
+            }
+            cur.next = new HistoryData(url);
+            cur = cur.next;
+            pre = cur;
+            position++;
+            sizeCount = position;
+        }
+
+        public String back(int steps) {
+            position = Math.max(position - steps, 0);
+            position = position == 0 ? 1 : position;
+            if (position - 1 == 0) {
+                cur = head.next;
+                return head.next.url;
+            }
+            int pos = 0;
+            HistoryData tempCur = head.next;
+            while (pos != position - 1) {
+                pos++;
+                tempCur = tempCur.next;
+            }
+            cur = tempCur;
+            return cur.url;
+        }
+
+        public String forward(int steps) {
+            int backPosition = position - 1;
+            position = Math.min(position + steps, sizeCount);
+            if (position == sizeCount) {
+                cur = pre;
+                return pre.url;
+            }
+            int pos = backPosition;
+            HistoryData tempCur = cur;
+            while (pos != position - 1) {
+                pos++;
+                tempCur = tempCur.next;
+            }
+            cur = tempCur;
+            return cur.url;
+        }
+
+        public boolean isEmpty(String page) {
+            return page == null || page.length() == 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        BrowserHistory1 browserHistory = new BrowserHistory1("leetcode.com");
         browserHistory.visit("google.com");
         browserHistory.visit("facebook.com");
         browserHistory.visit("youtube.com");
@@ -76,7 +154,7 @@ public class LinkedList1472 {
         System.err.println(browserHistory.back(7));
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
 
 //        ["forward","visit","visit","forward","visit","back","visit","visit","forward"]
 //        [[7],["crqje.com"],["iybch.com"],[5],["uun.com"],[10],["hci.com"],["whula.com"],[10]]
