@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 给你两个链表 list1 和 list2 ，它们包含的元素分别为 n 个和 m 个。
- * 请你将 list1 中下标从 a 到 b 的全部节点都删除，并将list2 接在被删除节点的位置
+ * 给你两个链表list1 和list2，它们包含的元素分别为n 个和m 个。
+ * 请你将list1中下标从 a 到 b 的全部节点都删除，并将list2接在被删除节点的位置
  *
  * @author zi hao
  * @version 1.0

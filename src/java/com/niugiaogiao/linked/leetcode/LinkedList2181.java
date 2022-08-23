@@ -5,7 +5,7 @@ package com.niugiaogiao.linked.leetcode;
  * <p>
  * 对于每两个相邻的 0 ，请你将它们之间的所有节点合并成一个节点，其值是所有已合并节点的值之和。然后将所有 0 移除，修改后的链表不应该含有任何 0 。
  * <p>
- *  返回修改后链表的头节点 head
+ * 返回修改后链表的头节点 head
  *
  * @author zi hao
  * @version 1.0
