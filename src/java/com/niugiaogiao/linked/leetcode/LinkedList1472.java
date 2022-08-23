@@ -1,6 +1,5 @@
 package com.niugiaogiao.linked.leetcode;
 
-import java.util.Deque;
 import java.util.LinkedList;
 
 /**
@@ -48,13 +47,14 @@ public class LinkedList1472 {
         }
 
         public String back(int steps) {
-            position = Math.max(position - steps - 1, 0);
-            return history.get(position);
+            position = Math.max(position - steps, 0);
+            position = position == 0 ? 1 : position;
+            return history.get(position - 1);
         }
 
         public String forward(int steps) {
-            position = Math.max(position + steps - 1, sizeCount - 1);
-            return history.get(position);
+            position = Math.min(position + steps, sizeCount);
+            return history.get(position - 1);
         }
 
         public boolean isEmpty(String page) {
@@ -62,13 +62,37 @@ public class LinkedList1472 {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         BrowserHistory browserHistory = new BrowserHistory("leetcode.com");
         browserHistory.visit("google.com");
         browserHistory.visit("facebook.com");
         browserHistory.visit("youtube.com");
         System.err.println(browserHistory.back(1));
         System.err.println(browserHistory.back(1));
-        System.err.println("");
+        System.err.println(browserHistory.forward(1));
+        browserHistory.visit("linkedin.com");
+        System.err.println(browserHistory.forward(2));
+        System.err.println(browserHistory.back(2));
+        System.err.println(browserHistory.back(7));
+    }
+
+    public static void main(String[] args) {
+
+//        ["forward","visit","visit","forward","visit","back","visit","visit","forward"]
+//        [[7],["crqje.com"],["iybch.com"],[5],["uun.com"],[10],["hci.com"],["whula.com"],[10]]
+        BrowserHistory browserHistory = new BrowserHistory("esgriv.com");
+        browserHistory.visit("cgrt.com");
+        browserHistory.visit("tip.com");
+        System.err.println(browserHistory.back(9));
+        browserHistory.visit("kttzxgh.com");
+        System.err.println(browserHistory.forward(7));
+        browserHistory.visit("crqje.com");
+        browserHistory.visit("iybch.com");
+        System.err.println(browserHistory.forward(5));
+        browserHistory.visit("uun.com");
+        System.err.println(browserHistory.back(10));
+        browserHistory.visit("hci.com");
+        browserHistory.visit("whula.com");
+        System.err.println(browserHistory.forward(10));
     }
 }
