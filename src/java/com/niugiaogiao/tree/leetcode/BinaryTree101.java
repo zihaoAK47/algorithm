@@ -2,6 +2,7 @@ package com.niugiaogiao.tree.leetcode;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinaryTree101 {
 
@@ -64,11 +65,10 @@ public class BinaryTree101 {
     }
 
     public static boolean isSymmetric1(TreeNode root) {
-        return run(root, root);
+        return run1(root, root);
     }
 
-
-    public static boolean run(TreeNode leftNode, TreeNode rightNode) {
+    public static boolean run1(TreeNode leftNode, TreeNode rightNode) {
         if (leftNode == null && rightNode == null) {
             return true;
         }
@@ -78,7 +78,7 @@ public class BinaryTree101 {
             if (leftNode.left.val != rightNode.right.val) {
                 res1 = false;
             } else {
-                res1 = run(leftNode.left, rightNode.right);
+                res1 = run1(leftNode.left, rightNode.right);
             }
         } else if (leftNode.left == null && rightNode.right == null) {
             res1 = true;
@@ -89,13 +89,54 @@ public class BinaryTree101 {
             if (leftNode.right.val != rightNode.left.val) {
                 res2 = false;
             } else {
-                res2 = run(leftNode.right, rightNode.left);
+                res2 = run1(leftNode.right, rightNode.left);
             }
         } else if (leftNode.right == null && rightNode.left == null) {
             res2 = true;
         }
 
         return res1 && res2;
+    }
+
+    public static boolean isSymmetric2(TreeNode root) {
+        return run2(root, root);
+    }
+
+    public static boolean run2(TreeNode leftNode, TreeNode rightNode) {
+        if (leftNode == null && rightNode == null) {
+            return true;
+        }
+        if (leftNode == null || rightNode == null) {
+            return false;
+        }
+        return leftNode.val == rightNode.val && run2(leftNode.left, rightNode.right) && run2(leftNode.right, rightNode.left);
+    }
+
+    public static boolean isSymmetric3(TreeNode root) {
+        return run3(root, root);
+    }
+
+    public static boolean run3(TreeNode r1, TreeNode r2) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(r1);
+        queue.add(r2);
+        while (!queue.isEmpty()) {
+            TreeNode poll1 = queue.poll();
+            TreeNode poll2 = queue.poll();
+            if (poll1 == null && poll2 == null) {
+                continue;
+            }
+            if ((poll1 == null || poll2 == null) || (poll1.val != poll2.val)) {
+                return false;
+            }
+            queue.offer(poll1.left);
+            queue.offer(poll2.right);
+
+            queue.offer(poll1.right);
+            queue.offer(poll2.left);
+        }
+
+        return true;
     }
 
     public static void main(String[] args) {
