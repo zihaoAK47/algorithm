@@ -71,6 +71,32 @@ public class BinaryTree103 {
         return res;
     }
 
+    static List<List<Integer>> res = new LinkedList<>();
+
+    public static List<List<Integer>> zigzagLevelOrder1(TreeNode root) {
+        if (root == null) {
+            return res;
+        }
+        run(root, 1, true);
+        return res;
+    }
+
+    public static void run(TreeNode node, int deep, boolean flag) {
+        if (node == null) {
+            return;
+        }
+        if (res.size() < deep) {
+            res.add(deep - 1, new LinkedList<>());
+        }
+        if (flag) {
+            ((LinkedList<Integer>) res.get(deep - 1)).addLast(node.val);
+        } else {
+            ((LinkedList<Integer>) res.get(deep - 1)).addFirst(node.val);
+        }
+        run(node.left, deep + 1, !flag);
+        run(node.right, deep + 1, !flag);
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
