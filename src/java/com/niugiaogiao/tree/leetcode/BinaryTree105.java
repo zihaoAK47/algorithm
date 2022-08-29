@@ -2,7 +2,9 @@ package com.niugiaogiao.tree.leetcode;
 
 import com.niugiaogiao.other.Solution;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -40,26 +42,28 @@ public class BinaryTree105 {
 
     private Map<Integer, Integer> indexMap;
 
-    public TreeNode myBuildTree(int[] preorder, int[] inorder, int preorder_left, int preorder_right, int inorder_left, int inorder_right) {
+    public TreeNode myBuildTree(int[] preorder, int[] inorder,
+                                int preorder_left, int preorder_right,
+                                int inorder_left, int inorder_right) {
         if (preorder_left > preorder_right) {
             return null;
         }
-
-        // 前序遍历中的第一个节点就是根节点
-        int preorder_root = preorder_left;
         // 在中序遍历中定位根节点
-        int inorder_root = indexMap.get(preorder[preorder_root]);
-
+        int inorder_root = indexMap.get(preorder[preorder_left]);
         // 先把根节点建立出来
-        TreeNode root = new TreeNode(preorder[preorder_root]);
+        TreeNode root = new TreeNode(preorder[preorder_left]);
         // 得到左子树中的节点数目
         int size_left_subtree = inorder_root - inorder_left;
         // 递归地构造左子树，并连接到根节点
         // 先序遍历中「从 左边界+1 开始的 size_left_subtree」个元素就对应了中序遍历中「从 左边界 开始到 根节点定位-1」的元素
-        root.left = myBuildTree(preorder, inorder, preorder_left + 1, preorder_left + size_left_subtree, inorder_left, inorder_root - 1);
+        root.left = myBuildTree(preorder, inorder,
+                preorder_left + 1, preorder_left + size_left_subtree,
+                inorder_left, inorder_root - 1);
         // 递归地构造右子树，并连接到根节点
         // 先序遍历中「从 左边界+1+左子树节点数目 开始到 右边界」的元素就对应了中序遍历中「从 根节点定位+1 到 右边界」的元素
-        root.right = myBuildTree(preorder, inorder, preorder_left + size_left_subtree + 1, preorder_right, inorder_root + 1, inorder_right);
+        root.right = myBuildTree(preorder, inorder,
+                preorder_left + size_left_subtree + 1, preorder_right,
+                inorder_root + 1, inorder_right);
         return root;
     }
 
@@ -73,9 +77,60 @@ public class BinaryTree105 {
         return myBuildTree(preorder, inorder, 0, n - 1, 0, n - 1);
     }
 
-    public static void main(String[] args) {
-        TreeNode t1 = new TreeNode(1);
-        TreeNode t2 = new TreeNode(2);
+    public static TreeNode buildTree2(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[0]);
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        stack.push(root);
+        int inorderIndex = 0;
+        for (int i = 1; i < preorder.length; i++) {
+            int preorderVal = preorder[i];
+            TreeNode node = stack.peek();
+            if (node.val != inorder[inorderIndex]) {
+                node.left = new TreeNode(preorderVal);
+                stack.push(node.left);
+            } else {
+                while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+                    node = stack.pop();
+                    inorderIndex++;
+                }
+                node.right = new TreeNode(preorderVal);
+                stack.push(node.right);
+            }
+        }
+        return root;
     }
 
+    public static TreeNode buildTree3(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0) {
+            return null;
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        TreeNode root = new TreeNode(preorder[0]);
+        deque.add(root);
+        int inorderIndex = 0;
+        for (int i = 1 ; i < preorder.length ; i++) {
+            int val = preorder[i];
+            TreeNode node = deque.peek();
+            if (node.val != inorder[inorderIndex]) {
+                node.left = new TreeNode(val);
+                deque.push(node.left);
+            } else {
+                while (!deque.isEmpty() && deque.peek().val == inorder[inorderIndex]) {
+                    inorderIndex++;
+                    node = deque.poll();
+                }
+                node.right = new TreeNode(val);
+                deque.push(node.right);
+            }
+        }
+
+        return root;
+    }
+
+    public static void main(String[] args) {
+        buildTree2(new int[]{3, 9, 8, 5, 4, 10, 20, 15, 7}, new int[]{4, 5, 8, 10, 9, 3, 15, 20, 7});
+    }
 }
