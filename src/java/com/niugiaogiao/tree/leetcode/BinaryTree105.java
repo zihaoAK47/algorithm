@@ -104,17 +104,17 @@ public class BinaryTree105 {
     }
 
     public static TreeNode buildTree3(int[] preorder, int[] inorder) {
-        if (preorder == null || preorder.length == 0) {
+        if (preorder == null || inorder == null) {
             return null;
         }
+
+        int inorderIndex = 0;
         Deque<TreeNode> deque = new LinkedList<>();
         TreeNode root = new TreeNode(preorder[0]);
-        deque.add(root);
-        int inorderIndex = 0;
-        for (int i = 1 ; i < preorder.length ; i++) {
-            int val = preorder[i];
+        for (int i = 1; i < preorder.length; i++) {
             TreeNode node = deque.peek();
-            if (node.val != inorder[inorderIndex]) {
+            int val = preorder[i];
+            if (inorder[inorderIndex] != node.val) {
                 node.left = new TreeNode(val);
                 deque.push(node.left);
             } else {
