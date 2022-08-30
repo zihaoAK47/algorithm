@@ -130,6 +130,40 @@ public class BinaryTree105 {
         return root;
     }
 
+    Map<Integer, Integer> dict = new HashMap<>();
+    int[] tPreorder;
+    int[] tInorder;
+    int index = 0;
+
+    public TreeNode buildTree4(int[] preorder, int[] inorder) {
+        if (preorder == null || inorder == null || preorder.length != inorder.length) {
+            return null;
+        }
+        tPreorder = preorder;
+        tInorder = inorder;
+        index = 0;
+        int len = preorder.length;
+        dict = new HashMap<>(len);
+        for (int i = 0; i < len; i++) {
+            dict.put(inorder[i], i);
+        }
+
+        return run(0, len - 1);
+    }
+
+    public TreeNode run(int start, int end) {
+        if (start > end) {
+            return null;
+        }
+
+        TreeNode node = new TreeNode(tPreorder[index]);
+        index++;
+        int mid = dict.get(node.val);
+        node.left = run(start, mid - 1);
+        node.right = run(mid + 1, end);
+        return node;
+    }
+
     public static void main(String[] args) {
         buildTree2(new int[]{3, 9, 8, 5, 4, 10, 20, 15, 7}, new int[]{4, 5, 8, 10, 9, 3, 15, 20, 7});
     }
