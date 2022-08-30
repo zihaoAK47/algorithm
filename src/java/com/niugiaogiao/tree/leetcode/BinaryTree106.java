@@ -29,29 +29,31 @@ public class BinaryTree106 {
     Map<Integer, Integer> dict;
     int[] tInorder;
     int[] tPostOrder;
+    int index = 0;
 
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         int len = inorder.length;
         tInorder = inorder;
         tPostOrder = postorder;
-        dict = new HashMap<>(inorder.length);
-        for (int i = len - 1; i >= 0; i--) {
+        index = len - 1;
+        for (int i = 0; i < inorder.length; i++) {
             dict.put(inorder[i], i);
         }
 
-        return run(len - 1, 0, len - 1, 0);
+        return run(0, inorder.length - 1);
     }
 
-    public TreeNode run(int iStart, int iEnd, int pStart, int pEnd) {
-        if (pStart < pEnd) {
+    public TreeNode run(int start, int end) {
+        if (start > end) {
             return null;
         }
 
-        int inorderPos = dict.get(tPostOrder[pStart]);
-        int leftNodeSize = iEnd + inorderPos;
-        TreeNode node = new TreeNode(tPostOrder[pEnd]);
-
-        return null;
+        TreeNode root = new TreeNode(tPostOrder[index]);
+        int inorderPos = dict.get(root.val);
+        index--;
+        root.right = run(inorderPos + 1, end);
+        root.left = run(start, inorderPos - 1);
+        return root;
     }
 
     public TreeNode buildTree1(int[] inorder, int[] postorder) {
