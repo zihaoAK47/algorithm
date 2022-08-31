@@ -1,2 +1,1 @@
-# algorithm
-algorithm study.
+# Maxed leetcode
