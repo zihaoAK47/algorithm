@@ -1,6 +1,4 @@
-package com.niugiaogiao.tree.leetcode;
-
-import com.niugiaogiao.other.Solution;
+package com.niugiaogiao.binarytree.leetcode;
 
 import java.util.Deque;
 import java.util.HashMap;

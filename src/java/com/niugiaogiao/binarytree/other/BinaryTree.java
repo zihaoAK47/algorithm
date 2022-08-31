@@ -1,4 +1,4 @@
-package com.niugiaogiao.tree.other;
+package com.niugiaogiao.binarytree.other;
 
 import java.util.HashMap;
 import java.util.LinkedList;

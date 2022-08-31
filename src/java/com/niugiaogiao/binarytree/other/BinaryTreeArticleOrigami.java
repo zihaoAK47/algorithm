@@ -1,4 +1,4 @@
-package com.niugiaogiao.tree.other;
+package com.niugiaogiao.binarytree.other;
 
 /**
  * 一段纸条竖着放在桌子上，纸条下边向上方对折 1 次，压出折痕后展开，此时折痕是 凹 下去的

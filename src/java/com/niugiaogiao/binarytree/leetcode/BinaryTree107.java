@@ -1,4 +1,4 @@
-package com.niugiaogiao.tree.leetcode;
+package com.niugiaogiao.binarytree.leetcode;
 
 import java.util.LinkedList;
 import java.util.List;

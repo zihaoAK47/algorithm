@@ -1,4 +1,4 @@
-package com.niugiaogiao.tree.other;
+package com.niugiaogiao.binarytree.other;
 
 /**
  * 二叉树打印函数

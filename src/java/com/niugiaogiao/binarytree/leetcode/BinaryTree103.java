@@ -1,10 +1,8 @@
-package com.niugiaogiao.tree.leetcode;
+package com.niugiaogiao.binarytree.leetcode;
 
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * 给你二叉树的根节点 root ，返回其节点值的 锯齿形层序遍历 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）

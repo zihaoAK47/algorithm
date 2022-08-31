@@ -1,4 +1,4 @@
-package com.niugiaogiao.tree.other;
+package com.niugiaogiao.binarytree.other;
 
 /**
  * 给定一棵二叉树的头节点 head，返回这棵二叉树是否是满二叉树
