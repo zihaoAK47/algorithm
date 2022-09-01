@@ -1,1 +1,1 @@
-# Maxed leetcode
+# Hello algorithm ^_^.
