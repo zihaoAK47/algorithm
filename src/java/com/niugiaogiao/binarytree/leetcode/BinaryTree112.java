@@ -1,5 +1,8 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 给你二叉树的根节点root 和一个表示目标和的整数targetSum 。
  * 判断该树中是否存在 根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和targetSum
@@ -86,6 +89,49 @@ public class BinaryTree112 {
         int rightVal = run2.allRightVal == 0 ? run1.allRightVal + node.val : run2.allRightVal + node.val;
         return new Info(leftVal, rightVal, isRoot, isEquals);
     }
+
+
+    public static boolean hasPathSum1(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null || root.right == null) {
+            return root.val == targetSum;
+        }
+
+        return hasPathSum1(root.left, targetSum - root.val) || hasPathSum1(root.right, targetSum - root.val);
+    }
+
+    public static boolean hasPathSum2(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> queueVal = new LinkedList<>();
+        queue.add(root);
+        queueVal.add(root.val);
+        while (!queue.isEmpty()) {
+            TreeNode itemNode = queue.poll();
+            Integer itemVal = queueVal.poll();
+            if (itemNode.left == null && itemNode.right == null) {
+                if (itemNode.val == targetSum) {
+                    return true;
+                }
+            }
+            if (itemNode.left != null) {
+                queue.add(itemNode.left);
+                queueVal.add(targetSum + itemNode.left.val);
+            }
+            if (itemNode.right != null) {
+                queue.add(itemNode.right);
+                queueVal.add(targetSum + itemNode.right.val);
+            }
+        }
+
+        return false;
+    }
+
+
 
     public static void main(String[] args) {
 //        TreeNode t1 = new TreeNode(5);
