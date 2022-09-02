@@ -72,4 +72,24 @@ public class BinaryTree113 {
 
         return res;
     }
+
+    LinkedList<Integer> path = new LinkedList<>();
+    List<List<Integer>> res = new LinkedList<>();
+    public List<List<Integer>> pathSumDFS(TreeNode root, int targetNum) {
+        run(root, targetNum);
+        return res;
+    }
+
+    public void run(TreeNode root, int targetNum) {
+        if (root == null) return;
+
+        path.addLast(root.val);
+        targetNum -= root.val;
+        if (root.left == null && root.right == null && targetNum == 0)
+            res.add(new LinkedList<>(path));
+
+        run(root.left, targetNum);
+        run(root.right,targetNum);
+        path.pollFirst();
+    }
 }
