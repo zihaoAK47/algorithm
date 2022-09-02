@@ -35,63 +35,7 @@ public class BinaryTree112 {
         }
     }
 
-    static class Info {
-        // 左树总值
-        int allLeftVal;
-        // 右树总值
-        int allRightVal;
-        // 当前节点是否是根节点
-        boolean isRoot;
-        // 当前节点是否满足条件
-        boolean isEquals;
-
-        Info(int allLeftVal, int allRightVal, boolean isRoot, boolean isEquals) {
-            this.allLeftVal = allLeftVal;
-            this.allRightVal = allRightVal;
-            this.isRoot = isRoot;
-            this.isEquals = isEquals;
-        }
-
-        Info() {
-
-        }
-    }
-
-    public static boolean hasPathSum(TreeNode root, int targetSum) {
-        if (root == null) {
-            return false;
-        }
-
-        return run(root, targetSum, root).isEquals;
-    }
-
-    public static Info run(TreeNode node, int targetSum, TreeNode root) {
-        if (node == null) {
-            return new Info(0,0,false,false);
-        }
-        Info run1 = run(node.left, targetSum, root);
-        Info run2 = run(node.right, targetSum, root);
-        boolean isRoot = node == root;
-        boolean isEquals = false;
-        if (run1.allLeftVal + node.val == targetSum && isRoot) {
-            isEquals = true;
-        }
-        if (run1.allRightVal + node.val == targetSum && isRoot) {
-            isEquals = true;
-        }
-        if (run2.allLeftVal + node.val == targetSum && isRoot) {
-            isEquals = true;
-        }
-        if (run2.allRightVal + node.val == targetSum && isRoot) {
-            isEquals = true;
-        }
-        int leftVal = run1.allLeftVal == 0 ? run2.allLeftVal + node.val : run1.allLeftVal + node.val;
-        int rightVal = run2.allRightVal == 0 ? run1.allRightVal + node.val : run2.allRightVal + node.val;
-        return new Info(leftVal, rightVal, isRoot, isEquals);
-    }
-
-
-    public static boolean hasPathSum1(TreeNode root, int targetSum) {
+    public static boolean hasPathSumDFS(TreeNode root, int targetSum) {
         if (root == null) {
             return false;
         }
@@ -99,10 +43,10 @@ public class BinaryTree112 {
             return root.val == targetSum;
         }
 
-        return hasPathSum1(root.left, targetSum - root.val) || hasPathSum1(root.right, targetSum - root.val);
+        return hasPathSumDFS(root.left, targetSum - root.val) || hasPathSumDFS(root.right, targetSum - root.val);
     }
 
-    public static boolean hasPathSum2(TreeNode root, int targetSum) {
+    public static boolean hasPathSumBFS(TreeNode root, int targetSum) {
         if (root == null) {
             return false;
         }
@@ -155,8 +99,5 @@ public class BinaryTree112 {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
         t1.left = t2;
-
-        System.err.println(hasPathSum(t1, 1));
     }
-
 }
