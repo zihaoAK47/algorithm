@@ -4,6 +4,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
 
+/**
+ * 从中序与后序遍历序列构造二叉树
+ */
 public class BinaryTree106 {
 
     public static class TreeNode {
