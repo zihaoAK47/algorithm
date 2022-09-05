@@ -91,4 +91,21 @@ public class BinaryTree129 {
             run(node.right);
         }
     }
+
+    public int sumNumbers2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return root.val;
+        }
+        if (root.left != null) {
+            root.left.val += root.val * 10;
+        }
+        if (root.right != null) {
+            root.right.val += root.val * 10;
+        }
+
+        return sumNumbers2(root.left) + sumNumbers2(root.right);
+    }
 }
