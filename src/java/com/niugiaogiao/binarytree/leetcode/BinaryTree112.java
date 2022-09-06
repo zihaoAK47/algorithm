@@ -58,17 +58,45 @@ public class BinaryTree112 {
             TreeNode itemNode = queue.poll();
             Integer itemVal = queueVal.poll();
             if (itemNode.left == null && itemNode.right == null) {
-                if (itemNode.val == targetSum) {
+                if (itemVal == targetSum) {
                     return true;
                 }
+                continue;
             }
             if (itemNode.left != null) {
                 queue.add(itemNode.left);
-                queueVal.add(targetSum + itemNode.left.val);
+                queueVal.add(itemVal + itemNode.left.val);
             }
             if (itemNode.right != null) {
                 queue.add(itemNode.right);
-                queueVal.add(targetSum + itemNode.right.val);
+                queueVal.add(itemVal + itemNode.right.val);
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean hasPathSumBFS1(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode itemNode = queue.poll();
+            if (itemNode.left == null && itemNode.right == null) {
+                if (itemNode.val == targetSum) {
+                    return true;
+                }
+                continue;
+            }
+            if (itemNode.left != null) {
+                itemNode.left.val += itemNode.val;
+                queue.add(itemNode.left);
+            }
+            if (itemNode.right != null) {
+                itemNode.right.val += itemNode.val;
+                queue.add(itemNode.right);
             }
         }
 
