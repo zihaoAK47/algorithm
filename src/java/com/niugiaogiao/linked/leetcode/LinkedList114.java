@@ -101,26 +101,26 @@ public class LinkedList114 {
         if (root == null) {
             return;
         }
-        TreeNode cur = root;
-        while (cur != null) {
-            TreeNode pre = null;
-            TreeNode next = null;
-            if (cur.left != null) {
-                next = cur.left;
-                pre = cur.left;
+        TreeNode pre = null;
+        TreeNode next = null;
+        TreeNode current = root;
+        while (current != null) {
+            pre = null;
+            next = null;
+            if (current.left != null) {
+                pre = current.left;
+                next = current.left;
             }
-            // 找到最右节点
-            while (pre != null && pre.right != null) {
-                pre = pre.right;
+            // 找到左右节点
+            while (next != null && next.right != null) {
+                next = next.right;
             }
-            // 调整指向
-            if (pre != null) {
-                pre.right = root.right;
-                cur.right = next;
+            if (next != null) {
+                next.right = current.right;
+                current.right = pre;
             }
-
-            cur.left = null;
-            cur = cur.right;
+            current.left = null;
+            current = current.right;
         }
     }
 
