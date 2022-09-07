@@ -50,4 +50,25 @@ public class BinaryTree199 {
         return res;
     }
 
+    List<Integer> res = new LinkedList<>();
+    public List<Integer> rightSideViewDFS(TreeNode root) {
+        if (root == null) {
+            return res;
+        }
+        run(root, 0);
+        return res;
+    }
+
+    public void run(TreeNode node, int deep) {
+        if (node == null) {
+            return;
+        }
+
+        if (res.size() == deep) {
+            res.add(node.val);
+        }
+        run(node.right, deep + 1);
+        run(node.left, deep + 1);
+    }
+
 }
