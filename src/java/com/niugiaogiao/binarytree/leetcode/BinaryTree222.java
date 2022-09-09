@@ -60,7 +60,7 @@ public class BinaryTree222 {
         return 1 + countNodesDFS(root.left) + countNodesDFS(root.right);
     }
 
-    public int countNodesBFS1(TreeNode root) {
+    public static int countNodesBFS1(TreeNode root) {
         if (root == null) return 0;
 
         int h = 0;
@@ -72,7 +72,7 @@ public class BinaryTree222 {
         int start = 1 << h;
         int end = (1 << (h + 1)) - 1;
         while (start < end) {
-            int mid = ((end - start + 1)  >> 1) + start;
+            int mid = ((end - start + 1) >> 1) + start;
             if (isExists(root, h, mid)) {
                 start = mid;
             } else {
@@ -80,12 +80,25 @@ public class BinaryTree222 {
             }
         }
 
+//        {
+//            while (start <= end) {
+//                int mid = (start + end) / 2;
+//                if (isExists(root, h, mid)) {
+//                    start = mid + 1;
+//                } else {
+//                    end = mid - 1;
+//                }
+//            }
+//
+//            return start - 1;
+//        }
+
         return start;
     }
 
-    public boolean isExists(TreeNode root, int leaver, int k) {
-        int bits = 1 << (leaver - 1);
+    public static boolean isExists(TreeNode root, int leaver, int k) {
         TreeNode tempRoot = root;
+        int bits = 1 << (leaver - 1);
         while (tempRoot != null && bits > 0) {
             if ((bits & k) == 0) {
                 tempRoot = tempRoot.left;
@@ -98,7 +111,17 @@ public class BinaryTree222 {
     }
 
     public static void main(String[] args) {
-        int bits = 1 << (2 - 1);
-        System.err.println(bits);
+        TreeNode t1 = new TreeNode(1);
+        TreeNode t2 = new TreeNode(2);
+        TreeNode t3 = new TreeNode(3);
+        TreeNode t4 = new TreeNode(4);
+        TreeNode t5 = new TreeNode(5);
+        TreeNode t6 = new TreeNode(6);
+        t1.left = t2;
+        t1.right = t3;
+        t2.left = t4;
+        t2.right = t5;
+        t3.left = t6;
+        countNodesBFS1(t1);
     }
 }
