@@ -1,5 +1,7 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -71,5 +73,52 @@ public class BinaryTree230 {
             return;
         }
         run(node.right);
+    }
+
+    static Map<TreeNode, Integer> nodeDict = new HashMap<>();
+    public static int kthSmallestTest(TreeNode root, int k) {
+        if (root == null) {
+            return 0;
+        }
+        saveDict(root);
+        TreeNode cur = root;
+        while (cur != null) {
+            int nodeCount = nodeDict.getOrDefault(cur.left, 0);
+            if (nodeCount == k - 1) {
+                break;
+            } else if (nodeCount > k - 1) {
+                cur = cur.left;
+            } else {
+                cur = cur.right;
+                k -= nodeCount + 1;
+            }
+        }
+
+        return cur.val;
+    }
+
+    public static int saveDict(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        nodeDict.put(node, 1 + saveDict(node.left) + saveDict(node.right));
+        return nodeDict.get(node);
+    }
+
+    public static void main(String[] args) {
+        TreeNode t1 = new TreeNode(5);
+        TreeNode t2 = new TreeNode(3);
+        TreeNode t3 = new TreeNode(6);
+        TreeNode t4 = new TreeNode(2);
+        TreeNode t5 = new TreeNode(4);
+        TreeNode t6 = new TreeNode(1);
+        t1.left = t2;
+        t1.right = t3;
+        t2.left = t4;
+        t2.right = t5;
+        t4.left = t6;
+
+        kthSmallestTest(t1, 4);
+        System.err.println("");
     }
 }
