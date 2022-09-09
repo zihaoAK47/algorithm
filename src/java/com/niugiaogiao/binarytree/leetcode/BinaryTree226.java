@@ -49,4 +49,23 @@ public class BinaryTree226 {
 
         return root;
     }
+
+    public TreeNode invertTreeDFS(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        run(root);
+        return root;
+    }
+
+    public void run(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        TreeNode t = node.left;
+        node.left = node.right;
+        node.right = t;
+        invertTreeDFS(node.left);
+        invertTreeDFS(node.right);
+    }
 }
