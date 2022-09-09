@@ -11,7 +11,6 @@ import java.util.Queue;
  * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode.cn/problems/count-complete-tree-nodes
- * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class BinaryTree222 {
 
@@ -59,5 +58,47 @@ public class BinaryTree222 {
     public int countNodesDFS(TreeNode root) {
         if (root == null) return 0;
         return 1 + countNodesDFS(root.left) + countNodesDFS(root.right);
+    }
+
+    public int countNodesBFS1(TreeNode root) {
+        if (root == null) return 0;
+
+        int h = 0;
+        TreeNode tempNode = root;
+        while (tempNode.left != null) {
+            h++;
+            tempNode = tempNode.left;
+        }
+        int start = 1 << h;
+        int end = (1 << (h + 1)) - 1;
+        while (start < end) {
+            int mid = ((end - start + 1)  >> 1) + start;
+            if (isExists(root, h, mid)) {
+                start = mid;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        return start;
+    }
+
+    public boolean isExists(TreeNode root, int leaver, int k) {
+        int bits = 1 << (leaver - 1);
+        TreeNode tempRoot = root;
+        while (tempRoot != null && bits > 0) {
+            if ((bits & k) == 0) {
+                tempRoot = tempRoot.left;
+            } else {
+                tempRoot = tempRoot.right;
+            }
+            bits >>= 1;
+        }
+        return tempRoot != null;
+    }
+
+    public static void main(String[] args) {
+        int bits = 1 << (2 - 1);
+        System.err.println(bits);
     }
 }
