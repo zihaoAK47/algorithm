@@ -79,9 +79,8 @@ public class BinaryTree515 {
         if (res.size() < deep + 1) {
             res.add(node.val);
         } else {
-            res.set(deep, res.get(deep) == null ? node.val : Math.max(res.get(deep),node.val));
+            res.set(deep, Math.max(res.get(deep),node.val));
         }
-
         run(node.left, deep + 1);
         run(node.right, deep + 1);
     }
