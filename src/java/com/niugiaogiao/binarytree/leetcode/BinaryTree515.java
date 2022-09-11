@@ -63,4 +63,26 @@ public class BinaryTree515 {
         return res;
     }
 
+    List<Integer> res = new LinkedList<>();
+    public List<Integer> largestValuesDFS(TreeNode root) {
+        if (root == null) {
+            return res;
+        }
+        run(root, 0);
+        return res;
+    }
+
+    public void run(TreeNode node, int deep) {
+        if (node == null) {
+            return;
+        }
+        if (res.size() < deep + 1) {
+            res.add(node.val);
+        } else {
+            res.set(deep, res.get(deep) == null ? node.val : Math.max(res.get(deep),node.val));
+        }
+
+        run(node.left, deep + 1);
+        run(node.right, deep + 1);
+    }
 }
