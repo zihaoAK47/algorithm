@@ -103,6 +103,35 @@ public class BinaryTree235 {
         return cur;
     }
 
+    public TreeNode lowestCommonAncestorBFS(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode cur = null;
+        while (root != null) {
+            cur = root;
+            if (root.val < p.val && root.val < q.val) {
+                root = root.right;
+            } else if (root.val > p.val && root.val > q.val) {
+                root = root.left;
+            } else {
+                break;
+            }
+        }
+
+        return cur;
+    }
+
+    public TreeNode lowestCommonAncestorDFS(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val < p.val && root.val < q.val) {
+            return lowestCommonAncestorDFS(root.right, p ,q);
+        } else if (root.val > p.val && root.val > q.val) {
+            return lowestCommonAncestorDFS(root.left, p ,q);
+        } else {
+            return root;
+        }
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(2);
         TreeNode t2 = new TreeNode(1);
