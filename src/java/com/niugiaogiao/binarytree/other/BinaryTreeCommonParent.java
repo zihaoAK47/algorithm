@@ -120,17 +120,17 @@ public class BinaryTreeCommonParent {
 //        r2.left = r4;
 //        r2.right = r5;
 //        System.err.println(process1(r1, r4, r5).val);
-        Node r1 = new Node(1);
-        Node r2 = new Node(2);
-        Node r3 = new Node(3);
-        Node r4 = new Node(4);
-        Node r5 = new Node(5);
+        Node r1 = new Node(2);
+        Node r2 = new Node(1);
+//        Node r3 = new Node(3);
+//        Node r4 = new Node(4);
+//        Node r5 = new Node(5);
         r1.left = r2;
-        r1.right = r3;
-        r2.left = r4;
-        r3.left = r5;
+//        r1.right = r3;
+//        r2.left = r4;
+//        r3.left = r5;
 
-        Info info = process2(r1, r4, r5);
+        Info info = process2(r1, r1, r2);
         System.err.println(info.parentNode.val);
     }
 }
