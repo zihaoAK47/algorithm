@@ -118,7 +118,7 @@ public class BinaryTree230 {
         t2.right = t5;
         t4.left = t6;
 
-        kthSmallestTest(t1, 4);
+        kthSmallestTest(t1, 6);
         System.err.println("");
     }
 }
