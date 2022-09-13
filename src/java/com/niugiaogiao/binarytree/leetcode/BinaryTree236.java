@@ -97,7 +97,7 @@ public class BinaryTree236 {
 //        TreeNode t2 = new TreeNode(1);
 //        t1.left = t2;
 
-        lowestCommonAncestorDFS(r1, r7, r8);
+        lowestCommonAncestorDFS(r1, r2, r3);
         System.err.println(parent.val);
     }
 
