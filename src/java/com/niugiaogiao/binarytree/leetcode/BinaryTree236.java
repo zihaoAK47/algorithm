@@ -58,4 +58,47 @@ public class BinaryTree236 {
             saveDict(node.right);
         }
     }
+
+    static TreeNode parent = null;
+
+    public static TreeNode lowestCommonAncestorDFS(TreeNode root, TreeNode p, TreeNode q) {
+        run(root, p, q);
+        return parent;
+    }
+
+    public static boolean run(TreeNode node, TreeNode p, TreeNode q) {
+        if (node == null) return false;
+        boolean left = run(node.left, p, q) || node == p || node == q;
+        boolean right = run(node.right, p, q) || node == q || node == p;
+        parent = left && right ? node : parent;
+        return left || right;
+    }
+
+    public static void main(String[] args) {
+        TreeNode r1 = new TreeNode(3);
+        TreeNode r2 = new TreeNode(5);
+        TreeNode r3 = new TreeNode(1);
+        TreeNode r4 = new TreeNode(6);
+        TreeNode r5 = new TreeNode(2);
+        TreeNode r6 = new TreeNode(0);
+        TreeNode r7 = new TreeNode(8);
+        TreeNode r8 = new TreeNode(7);
+        TreeNode r9 = new TreeNode(4);
+        r1.left = r2;
+        r1.right = r3;
+        r2.left = r4;
+        r2.right = r5;
+        r3.left = r6;
+        r3.right = r7;
+        r5.left = r8;
+        r5.right = r9;
+
+//        TreeNode t1 = new TreeNode(2);
+//        TreeNode t2 = new TreeNode(1);
+//        t1.left = t2;
+
+        lowestCommonAncestorDFS(r1, r7, r8);
+        System.err.println(parent.val);
+    }
+
 }
