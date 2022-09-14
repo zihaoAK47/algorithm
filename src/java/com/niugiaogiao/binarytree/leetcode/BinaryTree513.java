@@ -1,5 +1,6 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -33,14 +34,14 @@ public class BinaryTree513 {
         }
     }
 
-    public int findBottomLeftValue(TreeNode root) {
+    public int findBottomLeftValueBFS(TreeNode root) {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         int val = root.val;
         while (!queue.isEmpty()) {
             int size = queue.size();
             boolean flag = true;
-            for (int i = 0 ; i < size ; i++) {
+            for (int i = 0; i < size; i++) {
                 TreeNode item = queue.poll();
                 if (flag && item.left != null) {
                     val = item.left.val;
@@ -59,5 +60,42 @@ public class BinaryTree513 {
         }
 
         return val;
+    }
+
+    public int findBottomLeftValueBFS1(TreeNode root) {
+        int ret = 0;
+        Queue<TreeNode> queue = new ArrayDeque<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode p = queue.poll();
+            if (p.right != null) {
+                queue.offer(p.right);
+            }
+            if (p.left != null) {
+                queue.offer(p.left);
+            }
+            ret = p.val;
+        }
+        return ret;
+    }
+
+
+    int curHeight = 0;
+    int curVal = 0;
+    public int findBottomLeftValueDFS(TreeNode root) {
+        run(root, 0);
+        return curVal;
+    }
+
+    public void run(TreeNode node, int height) {
+        if (node == null) return;
+
+        height++;
+        run(node.left, height);
+        run(node.right, height);
+        if (height > curHeight) {
+            curHeight = height;
+            curVal = node.val;
+        }
     }
 }
