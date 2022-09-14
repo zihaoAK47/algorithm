@@ -3,8 +3,16 @@ package com.niugiaogiao.binarytree.leetcode;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
+/**
+ * 给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。
+ * <p>
+ * 叶子节点 是指没有子节点的节点。
+ * <p>
+ * https://leetcode.cn/problems/binary-tree-paths/
+ *
+ * @author zihao
+ */
 public class BinaryTree257 {
 
     public static class TreeNode {
@@ -61,8 +69,9 @@ public class BinaryTree257 {
     }
 
     List<String> res1 = new LinkedList<>();
+
     public List<String> binaryTreePathsDFS2(TreeNode root) {
-        run(root,"");
+        run(root, "");
         return res;
     }
 
