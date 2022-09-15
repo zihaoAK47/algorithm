@@ -3,7 +3,7 @@ package com.niugiaogiao.binarytree.leetcode;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
+import java.util.Stack;
 
 /**
  * 请考虑一棵二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 叶值序列
@@ -32,42 +32,13 @@ public class BinaryTree872 {
         }
     }
 
-    public static boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        String r1 = getLeavesVal(root1);
-        String r2 = getLeavesVal(root2);
-        System.err.println(r1);
-        System.err.println(r2);
-
-        return r1.equals(r2);
-    }
-
-    public static String getLeavesVal(TreeNode node) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        StringBuilder stringBuilder = new StringBuilder();
-        queue.add(node);
-        while (!queue.isEmpty()) {
-            TreeNode item = queue.poll();
-            if (item.left == null && item.right == null) {
-                stringBuilder.append(item.val);
-            }
-            if (item.left != null) {
-                queue.add(item.left);
-            }
-            if (item.right != null) {
-                queue.add(item.right);
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
     public static boolean leafSimilarDFS(TreeNode root1, TreeNode root2) {
         List<Integer> res1 = new LinkedList<>();
         run(root1, res1);
         List<Integer> res2 = new LinkedList<>();
         run(root2, res2);
 
-        if(res1.size() == res2.size()) {
+        if (res1.size() == res2.size()) {
             boolean flag = false;
             for (int i = 0; i < res1.size(); ++i) {
                 if (!Objects.equals(res1.get(i), res2.get(i))) {
@@ -85,6 +56,43 @@ public class BinaryTree872 {
         if (root.left == null && root.right == null) res.add(root.val);
         run(root.left, res);
         run(root.right, res);
+    }
+
+    public static boolean leafSimilarBFS(TreeNode root1, TreeNode root2) {
+        List<Integer> r1 = getNode(root1);
+        List<Integer> r2 = getNode(root2);
+        if (r1.size() == r2.size()) {
+            for (int i = 0 ; i < r1.size() ; ++i) {
+                if (!r1.get(i).equals(r2.get(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static List<Integer> getNode(TreeNode node) {
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(node);
+        List<Integer> res = new LinkedList<>();
+        while (!stack.isEmpty()) {
+            TreeNode poll = stack.pop();
+            if (poll.left == null && poll.right == null) {
+                res.add(poll.val);
+                continue;
+            }
+            if (poll.right != null) {
+                stack.push(poll.right);
+            }
+            if (poll.left != null) {
+                stack.push(poll.left);
+            }
+        }
+
+        return res;
     }
 
     public static void main(String[] args) {
