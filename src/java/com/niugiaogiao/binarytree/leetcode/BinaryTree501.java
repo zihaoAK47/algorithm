@@ -47,6 +47,7 @@ public class BinaryTree501 {
 
     int count = 0;
     Map<Integer, Integer> dict = new HashMap<>(16);
+
     public int[] findMode(TreeNode root) {
         inorder(root);
         List<Integer> res = new ArrayList<>();
@@ -72,5 +73,65 @@ public class BinaryTree501 {
         count = Math.max(count, dict.get(node.val));
         inorder(node.right);
     }
+
+    /* 实现方式 2 */
+
+    static int tCount;
+    static int lastNumber;
+    static int maxCount;
+    static List<Integer> returnResult = new ArrayList<>();
+
+    public static int[] findMode2(TreeNode root) {
+        inorder2(root);
+
+        int[] tRes = new int[returnResult.size()];
+        for (int i = 0 ; i < returnResult.size() ; ++i) {
+            tRes[i] = returnResult.get(i);
+        }
+
+        return tRes;
+    }
+
+    public static void inorder2(TreeNode node) {
+        if (node == null) return;
+
+        inorder2(node.left);
+        update(node.val);
+        inorder2(node.right);
+    }
+
+    public static void update(int val) {
+        if (val == lastNumber) {
+            tCount++;
+        } else {
+            tCount = 1;
+            lastNumber = val;
+        }
+
+        if (tCount == maxCount) {
+            returnResult.add(val);
+        }
+
+        if (maxCount > tCount) {
+            maxCount = tCount;
+            returnResult.clear();
+            returnResult.add(val);
+        }
+    }
+
+    public static void main(String[] args) {
+//        TreeNode t1 = new TreeNode(1);
+//        TreeNode t2 = new TreeNode(2);
+//        TreeNode t3 = new TreeNode(2);
+//        t1.right = t2;
+//        t2.left = t3;
+
+        TreeNode t1 = new TreeNode(1);
+        TreeNode t2 = new TreeNode(1);
+        t1.right = t2;
+
+        findMode2(t1);
+    }
+
 
 }
