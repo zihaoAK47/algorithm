@@ -119,6 +119,59 @@ public class BinaryTree501 {
         }
     }
 
+    static int base3;
+    static int count3;
+    static int maxCount3;
+    static List<Integer> result = new LinkedList<>();
+    public static int[] findMode3(TreeNode root) {
+        TreeNode cur = root;
+        TreeNode pre = root;
+        while (cur != null) {
+            if (cur.left == null) {
+                updateVal(cur.val);
+                cur = cur.right;
+                continue;
+            }
+            pre = cur.left;
+            while (pre.right != null && pre.right != cur) {
+                pre = pre.right;
+            }
+            if (pre.right == null) {
+                pre.right = cur;
+                cur = cur.left;
+            } else {
+                pre.right = null;
+                update(cur.val);
+                cur = cur.right;
+            }
+        }
+
+        int[] tRes = new int[returnResult.size()];
+        for (int i = 0 ; i < returnResult.size() ; ++i) {
+            tRes[i] = returnResult.get(i);
+        }
+        return tRes;
+    }
+
+    public static void updateVal(int x) {
+        if (x == base3) {
+            count3++;
+        } else {
+            count3 = 1;
+            base3 = x;
+        }
+
+        if (count3 == maxCount3) {
+            result.add(x);
+        }
+
+        if (count3 > maxCount3) {
+            result.clear();
+            maxCount3 = count3;
+            result.add(x);
+        }
+    }
+
     public static void main(String[] args) {
 //        TreeNode t1 = new TreeNode(1);
 //        TreeNode t2 = new TreeNode(2);
