@@ -1,5 +1,7 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.Stack;
+
 /**
  * 530. 二叉搜索树的最小绝对差
  * 给你一个二叉搜索树的根节点 root ，返回 树中任意两不同节点值之间的最小差值 。
@@ -34,7 +36,7 @@ public class BinaryTree530 {
     static int min = Integer.MAX_VALUE;
     static int pre = -1;
 
-    public static int getMinimumDifference(TreeNode root) {
+    public static int getMinimumDifferenceDFS(TreeNode root) {
         if (root == null) return 0;
         getMin(root);
         return min;
@@ -50,6 +52,30 @@ public class BinaryTree530 {
         getMin(node.right);
     }
 
+    public static int getMinimumDifferenceBFS(TreeNode root) {
+        if (root == null) return 0;
+
+        Stack<TreeNode> stack = new Stack<>();
+        int pre = -1;
+        int min = Integer.MAX_VALUE;
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                TreeNode poll = stack.pop();
+                if (pre != -1) {
+                    min = Math.min(min, poll.val - pre);
+                }
+                pre = poll.val;
+                root = poll.right;
+            }
+        }
+
+        return min;
+    }
+
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(236);
         TreeNode t2 = new TreeNode(104);
@@ -60,6 +86,5 @@ public class BinaryTree530 {
         t1.right = t3;
         t2.right = t4;
         t3.right = t5;
-        System.err.println(getMinimumDifference(t1));
     }
 }
