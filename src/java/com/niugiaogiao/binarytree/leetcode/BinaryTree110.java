@@ -31,15 +31,15 @@ public class BinaryTree110 {
 
     static boolean res = true;
 
-    public static boolean isBalanced(TreeNode root) {
-        run(root);
+    public static boolean isBalancedDFS1(TreeNode root) {
+        run1(root);
         return res;
     }
 
-    public static int run(TreeNode node) {
+    public static int run1(TreeNode node) {
         if (node == null) return 0;
-        int leftHeight = run(node.left);
-        int rightHeight = run(node.right);
+        int leftHeight = run1(node.left);
+        int rightHeight = run1(node.right);
         int maxHeight = Math.max(leftHeight, rightHeight);
         if (Math.abs(leftHeight - rightHeight) > 1) {
             res = false;
@@ -47,12 +47,26 @@ public class BinaryTree110 {
         return maxHeight + 1;
     }
 
+    public static boolean isBalancedDFS2(TreeNode root) {
+        if (root == null) return true;
+
+        return Math.abs(run2(root.left) - run2(root.right)) <= 1
+                && isBalancedDFS2(root.left)
+                && isBalancedDFS2(root.right);
+    }
+
+    public static int run2(TreeNode node) {
+        if (node == null) return 0;
+
+        return 1 + Math.max(run2(node.left), run2(node.right));
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
         TreeNode t3 = new TreeNode(3);
         t1.left = t2;
-        t2.left =t3;
-        System.err.println(isBalanced(null));
+        t2.left = t3;
+        System.err.println(isBalancedDFS2(t1));
     }
 }
