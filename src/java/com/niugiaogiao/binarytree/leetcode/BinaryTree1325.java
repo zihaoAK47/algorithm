@@ -1,5 +1,7 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.Stack;
+
 /**
  * 删除给定值的叶子节点
  * <p>
@@ -37,7 +39,7 @@ public class BinaryTree1325 {
         }
     }
 
-    public static TreeNode removeLeafNodes(TreeNode root, int target) {
+    public static TreeNode removeLeafNodesDFS1(TreeNode root, int target) {
         if (root == null) {
             return null;
         }
@@ -59,6 +61,41 @@ public class BinaryTree1325 {
         return node;
     }
 
+    public static TreeNode removeLeafNodesDFS2(TreeNode root, int target) {
+        if (root == null) return null;
+        root.left = removeLeafNodesDFS2(root.left, target);
+        root.right = removeLeafNodesDFS2(root.right, target);
+        if (root.val == target && root.left == null && root.right == null) {
+            return null;
+        }
+
+        return root;
+    }
+
+    public static TreeNode removeLeafNodesBFS(TreeNode root, int target) {
+        Stack<TreeNode> stack = new Stack<>();
+
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                TreeNode item = stack.pop();
+                while (item.left == null && item.right == null && item.val == target) {
+                    item = stack.pop();
+                    if (item.left.val == target) {
+                        item.left = null;
+                    } else if (item.right.val == target) {
+                        item.right = null;
+                    }
+                }
+                root = item.right;
+            }
+        }
+
+        return root;
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
@@ -71,6 +108,6 @@ public class BinaryTree1325 {
         t2.left = t4;
         t3.left = t5;
         t3.right = t6;
-        removeLeafNodes(t1, 2);
+        removeLeafNodesBFS(t1, 2);
     }
 }
