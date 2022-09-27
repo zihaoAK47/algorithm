@@ -99,6 +99,34 @@ public class BinaryTree450 {
         return searchNode((node.val < key) ? node.right : node.left, key);
     }
 
+    /**
+     * 二叉搜索树另一个删除实现
+     */
+    public static TreeNode delNode1(TreeNode root, int key) {
+        if (root == null) return null;
+
+        if (root.val < key) {
+            root.right = delNode1(root.right, key);
+        } else if (root.val > key) {
+            root.left = delNode1(root.left, key);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            } else {
+                TreeNode node = root.right;
+                while (node.left != null) {
+                    node = node.left;
+                }
+                node.left = root.left;
+                root = root.right;
+            }
+        }
+
+        return root;
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(5);
         TreeNode t2 = new TreeNode(3);
