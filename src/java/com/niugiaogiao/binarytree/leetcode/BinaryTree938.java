@@ -69,7 +69,8 @@ public class BinaryTree938 {
 
     /* 实现方式3 */
     int sum3 = 0;
-    public int rangeSumBST(TreeNode root, int low, int high) {
+
+    public int rangeSumBST3(TreeNode root, int low, int high) {
         run3(root, low, high);
         return sum2;
     }
@@ -85,4 +86,33 @@ public class BinaryTree938 {
         }
     }
 
+    /* 实现方式4 */
+    public int rangeSumBST4(TreeNode root, int low, int high) {
+        int res = 0;
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode poll = queue.poll();
+            if (poll.val >= low && poll.val <= high) {
+                res += poll.val;
+            }
+            if (poll.val < low) {
+                queue.add(poll.right);
+            } else {
+                queue.add(poll.left);
+                queue.add(poll.right);
+            }
+        }
+
+        return res;
+    }
+
+    /* 实现方式5 */
+    public int rangeSumBST5(TreeNode root, int low, int high) {
+        if (root == null) return 0;
+        if (root.val > high) return rangeSumBST5(root.left, low, high);
+        if (root.val < low) return rangeSumBST5(root.right, low, high);
+        return root.val + rangeSumBST5(root.left, low, high) + rangeSumBST5(root.right, low, high);
+    }
 }
