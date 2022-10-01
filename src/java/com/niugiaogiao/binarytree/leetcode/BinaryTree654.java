@@ -62,7 +62,6 @@ public class BinaryTree654 {
 
     public static void main(String[] args) {
         int[] nums = new int[]{3, 2, 1, 6, 0, 5};
-//        int[] nums = new int[]{3, 2, 1};
         constructMaximumBinaryTree(nums);
     }
 }
