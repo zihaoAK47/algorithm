@@ -1,5 +1,9 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
 /**
  * 最大二叉树
  * <p>
@@ -60,8 +64,40 @@ public class BinaryTree654 {
         return node;
     }
 
+    public static TreeNode constructMaximumBinaryTreeStack(int[] nums) {
+        int n = nums.length;
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Arrays.fill(left, -1);
+        Arrays.fill(right, -1);
+        TreeNode[] tree = new TreeNode[n];
+        for (int i = 0; i < n; ++i) {
+            tree[i] = new TreeNode(nums[i]);
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                right[stack.pop()] = i;
+            }
+            if (!stack.isEmpty()) {
+                left[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+
+        TreeNode root = null;
+        for (int i = 0; i < n; ++i) {
+            if (left[i] == -1 && right[i] == -1) {
+                root = tree[i];
+            } else if (right[i] == -1 || (left[i] != -1 && nums[left[i]] < nums[right[i]])) {
+                tree[left[i]].right = tree[i];
+            } else {
+                tree[right[i]].left = tree[i];
+            }
+        }
+        return root;
+    }
+
     public static void main(String[] args) {
         int[] nums = new int[]{3, 2, 1, 6, 0, 5};
-        constructMaximumBinaryTree(nums);
+        constructMaximumBinaryTreeStack(nums);
     }
 }
