@@ -41,16 +41,6 @@ public class BinaryTree687 {
 
     static int max = 0;
 
-    static class Info {
-        int pathLen;
-        int selfVal;
-
-        Info(int pathLen, int self) {
-            this.pathLen = pathLen;
-            this.selfVal = self;
-        }
-    }
-
     public static int run(TreeNode node) {
         if (node == null) return 0;
         int left = run(node.left);

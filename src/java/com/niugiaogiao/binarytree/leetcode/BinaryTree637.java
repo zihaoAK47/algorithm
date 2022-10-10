@@ -7,6 +7,7 @@ import java.util.Queue;
 
 /**
  * 二叉树的层平均值
+ * 给定一个非空二叉树的根节点 `root` , 以数组的形式返回每一层节点的平均值。与实际答案相差 `10-5` 以内的答案可以被接受
  * <p>
  * https://leetcode.cn/problems/average-of-levels-in-binary-tree/
  *
@@ -62,10 +63,11 @@ public class BinaryTree637 {
     List<Double> result = new ArrayList<>();
     List<Integer> count = new ArrayList<>();
     List<Double> avg = new ArrayList<>();
+
     public List<Double> averageOfLevelsDFS(TreeNode root) {
         if (root == null) return result;
         run(root, 0);
-        for (int i = 0 ; i < result.size() ; ++i) {
+        for (int i = 0; i < result.size(); ++i) {
             avg.add(result.get(i) / count.get(i));
         }
         return avg;
