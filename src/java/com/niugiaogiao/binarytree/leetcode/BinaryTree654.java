@@ -1,8 +1,6 @@
 package com.niugiaogiao.binarytree.leetcode;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
+import java.util.*;
 
 /**
  * 最大二叉树
@@ -64,7 +62,7 @@ public class BinaryTree654 {
         return node;
     }
 
-    public static TreeNode constructMaximumBinaryTreeStack(int[] nums) {
+    public static TreeNode constructMaximumBinaryTreeStack1(int[] nums) {
         int n = nums.length;
         Deque<Integer> stack = new ArrayDeque<Integer>();
         int[] left = new int[n];
@@ -96,8 +94,63 @@ public class BinaryTree654 {
         return root;
     }
 
+    public static TreeNode constructMaximumBinaryTreeStack2(int[] nums) {
+        // 对于当前节点 i 寻找到左边第一个比他大的数 和 右边第一个比他大的数
+        int len = nums.length;
+        int[] leftRes = new int[len];
+        int[] rightRes = new int[len];
+        TreeNode[] nodes = new TreeNode[len];
+        Arrays.fill(leftRes, -1);
+        Arrays.fill(rightRes, -1);
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < len; ++i) {
+            nodes[i] = new TreeNode(nums[i]);
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                // 破坏了栈的单调性
+                rightRes[stack.pop()] = i;
+            }
+            // 栈顶元素是当前元素左边的第一个最大值
+            if (!stack.isEmpty()) {
+                leftRes[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+        TreeNode root = null;
+        for (int i = 0; i < len; ++i) {
+            if (leftRes[i] == -1 && rightRes[i] == -1) {
+                root = nodes[i];
+            } else if (rightRes[i] == -1 || (leftRes[i] != -1 && nums[leftRes[i]] < nums[rightRes[i]])) {
+                nodes[leftRes[i]].right = nodes[i];
+            } else {
+                nodes[rightRes[i]].left = nodes[i];
+            }
+        }
+
+        return root;
+    }
+
+    // 单调递减，当前元素 i ，栈顶元素是 i 左边第一个比他大的数
+    // 若当前 i 破坏了单调性则当前 i 是栈中所有元素右边第一个比他大的数
+    public static TreeNode constructMaximumBinaryTree3(int[] nums) {
+        int len = nums.length;
+        TreeNode[] nodes = new TreeNode[len];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < len; ++i) {
+            nodes[i] = new TreeNode(nums[i]);
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                nodes[i].left = nodes[stack.pop()];
+            }
+            if (!stack.isEmpty()) {
+                nodes[stack.peek()].right = nodes[i];
+            }
+            stack.push(i);
+        }
+
+        return nodes[stack.get(0)];
+    }
+
     public static void main(String[] args) {
         int[] nums = new int[]{3, 2, 1, 6, 0, 5};
-        constructMaximumBinaryTreeStack(nums);
+        constructMaximumBinaryTree3(nums);
     }
 }
