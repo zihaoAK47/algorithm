@@ -29,55 +29,35 @@ public class BinaryTree783 {
         }
     }
 
-    static int min = Integer.MAX_VALUE;
-    // 选择第一个小的数
-    // 选择第二个小的数
-    static Integer minA = null;
-    static Integer minB = null;
-
+    static Integer pre = null;
+    static Integer min = Integer.MAX_VALUE;
     public static int minDiffInBST(TreeNode root) {
         run(root);
-        System.err.println(minA);
-        System.err.println(minB);
-        return 0;
+        return min;
     }
 
     public static void run(TreeNode node) {
         if (node == null) return;
         run(node.left);
+        if (pre == null) {
+            pre = node.val;
+        } else {
+            min = Math.min(min, Math.abs(node.val - pre));
+            pre = node.val;
+        }
         run(node.right);
-        if (minA == null) {
-            minA = node.val;
-            return;
-        } else if (minB == null) {
-            minB = node.val;
-            return;
-        }
-        if (node.val < minA) {
-            minA = node.val;
-            return;
-        }
-        if (node.val < minB) {
-            minB = node.val;
-        }
     }
 
     public static void main(String[] args) {
-//        TreeNode t1 = new TreeNode(4);
-//        TreeNode t2 = new TreeNode(2);
-//        TreeNode t3 = new TreeNode(6);
-//        TreeNode t4 = new TreeNode(1);
-//        TreeNode t5 = new TreeNode(3);
-//        t1.left = t2;
-//        t1.right = t3;
-//        t2.left = t4;
-//        t2.right = t5;
-        TreeNode t1 = new TreeNode();
-        TreeNode t2 = new TreeNode();
-        TreeNode t3 = new TreeNode();
-        TreeNode t4 = new TreeNode();
-        TreeNode t5 = new TreeNode();
-
-        minDiffInBST(t1);
+        TreeNode t1 = new TreeNode(27);
+        TreeNode t2 = new TreeNode(34);
+        TreeNode t3 = new TreeNode(58);
+        TreeNode t4 = new TreeNode(50);
+        TreeNode t5 = new TreeNode(44);
+        t1.right = t2;
+        t2.right = t3;
+        t3.left = t4;
+        t4.right = t5;
+        System.err.println(minDiffInBST(t1));
     }
 }
