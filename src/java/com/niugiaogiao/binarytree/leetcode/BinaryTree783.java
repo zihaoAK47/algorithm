@@ -1,5 +1,7 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import java.util.Stack;
+
 /**
  * 二叉搜索树节点最小距离
  * <p>
@@ -30,23 +32,43 @@ public class BinaryTree783 {
     }
 
     static Integer pre = null;
-    static Integer min = Integer.MAX_VALUE;
-    public static int minDiffInBST(TreeNode root) {
+    static Integer res = Integer.MAX_VALUE;
+    public static int minDiffInBSTDFS(TreeNode root) {
         run(root);
-        return min;
+        return res;
     }
 
     public static void run(TreeNode node) {
         if (node == null) return;
         run(node.left);
-        if (pre == null) {
-            pre = node.val;
-        } else {
-            min = Math.min(min, Math.abs(node.val - pre));
-            pre = node.val;
+        if (pre != null) {
+            res = Math.min(res, Math.abs(node.val - pre));
         }
+        pre = node.val;
         run(node.right);
     }
+
+    public static int minDiffInBSTBFS(TreeNode root) {
+        Integer pre = null;
+        int res = Integer.MAX_VALUE;
+        Stack<TreeNode> stack = new Stack<>();
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                TreeNode item = stack.pop();
+                if (pre != null) {
+                    res = Math.min(res,Math.abs(item.val - pre));
+                }
+                pre = item.val;
+                root = item.right;
+            }
+        }
+
+        return res;
+    }
+
 
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(27);
@@ -58,6 +80,6 @@ public class BinaryTree783 {
         t2.right = t3;
         t3.left = t4;
         t4.right = t5;
-        System.err.println(minDiffInBST(t1));
+        System.err.println(minDiffInBSTBFS(t1));
     }
 }
