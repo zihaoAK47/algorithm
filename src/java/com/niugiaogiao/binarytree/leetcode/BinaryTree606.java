@@ -1,5 +1,13 @@
 package com.niugiaogiao.binarytree.leetcode;
 
+import sun.reflect.generics.tree.Tree;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
 /**
  * 根据二叉树创建字符串
  * 给你二叉树的根节点 root ，请你采用前序遍历的方式，将二叉树转化为一个由括号和整数组成的字符串，返回构造出的字符串。
@@ -68,6 +76,37 @@ public class BinaryTree606 {
         }
     }
 
+    public static String tree2strBFS(TreeNode root) {
+        StringBuffer ans = new StringBuffer();
+        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
+        stack.push(root);
+        Set<TreeNode> visited = new HashSet<TreeNode>();
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.peek();
+            if (!visited.add(node)) {
+                if (node != root) {
+                    ans.append(")");
+                }
+                stack.pop();
+            } else {
+                if (node != root) {
+                    ans.append("(");
+                }
+                ans.append(node.val);
+                if (node.left == null && node.right != null) {
+                    ans.append("()");
+                }
+                if (node.right != null) {
+                    stack.push(node.right);
+                }
+                if (node.left != null) {
+                    stack.push(node.left);
+                }
+            }
+        }
+        return ans.toString();
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
@@ -76,7 +115,7 @@ public class BinaryTree606 {
         t1.left = t2;
         t1.right = t3;
         t2.left = t4;
-        System.err.println(tree2str(t1));
+        System.err.println(tree2strBFS(t1));
     }
 
 }
