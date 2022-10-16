@@ -27,12 +27,13 @@ public class BinaryTree863 {
         }
     }
 
-    Map<TreeNode, TreeNode> dict = new HashMap<>();
     List<Integer> result = new LinkedList<>();
+    Map<TreeNode, TreeNode> dict = new HashMap<>();
 
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        if (root == null || target == null) return null;
         setParent(root);
-        dfs(target, null, k, 0);
+        run(target, null, k, 0);
         return result;
     }
 
@@ -48,25 +49,21 @@ public class BinaryTree863 {
         }
     }
 
-    public void dfs(TreeNode node, TreeNode from, int k, int deep) {
+    public void run(TreeNode node, TreeNode from, int k, int deep) {
         if (node == null) return;
-
         if (k == deep) {
             result.add(node.val);
             return;
         }
-
         if (node.left != from) {
-            dfs(node.left, node, k, deep + 1);
+            run(node.left, node, k, deep + 1);
         }
-
         if (node.right != from) {
-            dfs(node.right, node, k, deep + 1);
+            run(node.right, node, k, deep + 1);
         }
-
-        TreeNode treeNode = dict.get(node);
-        if (treeNode != null && treeNode != from) {
-            dfs(treeNode, node, k, deep + 1);
+        if (dict.get(node) != from) {
+            run(dict.get(node), node, k, deep + 1);
         }
     }
+
 }
