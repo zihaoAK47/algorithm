@@ -76,35 +76,55 @@ public class BinaryTree606 {
         }
     }
 
+    /**
+     * 实现方式二
+     */
+    StringBuffer sb = new StringBuffer();
+
+    public String tree2strDFS(TreeNode root) {
+        dfs(root);
+        return sb.substring(1, sb.length() - 1);
+    }
+
+    public void dfs(TreeNode node) {
+        sb.append("(");
+        sb.append(node.val);
+        if (node.left != null) {
+            dfs(node.left);
+        } else if (node.right != null) {
+            sb.append("()");
+        }
+        if (node.right != null) {
+            dfs(node.right);
+        }
+        sb.append(")");
+    }
+
     public static String tree2strBFS(TreeNode root) {
-        StringBuffer ans = new StringBuffer();
-        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
+        StringBuffer sb = new StringBuffer();
+        Stack<TreeNode> stack = new Stack<>();
+        Set<TreeNode> set = new HashSet<>();
         stack.push(root);
-        Set<TreeNode> visited = new HashSet<TreeNode>();
         while (!stack.isEmpty()) {
-            TreeNode node = stack.peek();
-            if (!visited.add(node)) {
-                if (node != root) {
-                    ans.append(")");
-                }
+            TreeNode t = stack.peek();
+            if (set.contains(t)) {
+                sb.append(")");
                 stack.pop();
             } else {
-                if (node != root) {
-                    ans.append("(");
+                sb.append("(");
+                sb.append(t.val);
+                if (t.right != null) {
+                    stack.push(t.right);
                 }
-                ans.append(node.val);
-                if (node.left == null && node.right != null) {
-                    ans.append("()");
+                if (t.left != null) {
+                    stack.push(t.left);
+                } else if (t.right != null) {
+                    sb.append("()");
                 }
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                if (node.left != null) {
-                    stack.push(node.left);
-                }
+                set.add(t);
             }
         }
-        return ans.toString();
+        return sb.substring(1, sb.length() - 1);
     }
 
     public static void main(String[] args) {
