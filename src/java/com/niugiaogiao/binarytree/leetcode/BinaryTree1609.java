@@ -1,9 +1,6 @@
 package com.niugiaogiao.binarytree.leetcode;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 奇偶树
@@ -114,6 +111,31 @@ public class BinaryTree1609 {
         return true;
     }
 
+    // 实现方式3 - DFS
+    public static boolean isEvenOddTreeDFS(TreeNode root) {
+        return dfs(root, false, 1);
+    }
+
+    static List<Integer> temp = new LinkedList<>();
+    public static boolean dfs(TreeNode node, boolean flag, int level) {
+        if (node == null) return true;
+        // 奇偶性质检测
+        if (!((node.val % 2 == 0 && flag) || (node.val % 2 != 0 && !flag))) {
+            return false;
+        }
+        if (temp.size() < level) {
+            temp.add(level - 1, node.val);
+        } else {
+            // 递增递减检测
+            Integer pre = temp.get(level - 1);
+            if (!((flag && pre > node.val) || (!flag && pre < node.val))) {
+                return false;
+            }
+            temp.set(level - 1, node.val);
+        }
+        return dfs(node.left, !flag, level + 1) && dfs(node.right, !flag, level + 1);
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(10);
@@ -134,6 +156,16 @@ public class BinaryTree1609 {
         t3.right = t6;
         t5.left = t9;
         t6.right = t10;
-        System.err.println(isEvenOddTree1(t1));
+
+//        TreeNode t1 = new TreeNode(1);
+//        TreeNode t2 = new TreeNode(2);
+//        TreeNode t3 = new TreeNode(3);
+//        TreeNode t4 = new TreeNode(4);
+//        TreeNode t5 = new TreeNode(5);
+//        t1.left = t2;
+//        t1.right = t3;
+//        t2.left = t4;
+//        t3.right = t5;
+        System.err.println(isEvenOddTreeDFS(t1));
     }
 }
