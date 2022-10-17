@@ -88,4 +88,52 @@ public class BinaryTree1609 {
 
         return false;
     }
+
+    // 实现方式2 - 更改递增 递减判断算法
+    public static boolean isEvenOddTree1(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        // 默认奇数
+        boolean flag = false;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int pre = flag ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            for (int i = 0; i < size; ++i) {
+                TreeNode item = queue.poll();
+                if ((item.val % 2 == 0 && flag && pre > item.val) || (item.val % 2 != 0 && !flag && pre < item.val)) {
+                    if (item.left != null) queue.add(item.left);
+                    if (item.right != null) queue.add(item.right);
+                    pre = item.val;
+                } else {
+                    return false;
+                }
+            }
+            flag = !flag;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        TreeNode t1 = new TreeNode(1);
+        TreeNode t2 = new TreeNode(10);
+        TreeNode t3 = new TreeNode(4);
+        TreeNode t4 = new TreeNode(3);
+        TreeNode t5 = new TreeNode(7);
+        TreeNode t6 = new TreeNode(9);
+        TreeNode t7 = new TreeNode(12);
+        TreeNode t8 = new TreeNode(8);
+        TreeNode t9 = new TreeNode(6);
+        TreeNode t10 = new TreeNode(2);
+        t1.left = t2;
+        t1.right = t3;
+        t2.left = t4;
+        t4.left = t7;
+        t4.right = t8;
+        t3.left = t5;
+        t3.right = t6;
+        t5.left = t9;
+        t6.right = t10;
+        System.err.println(isEvenOddTree1(t1));
+    }
 }
