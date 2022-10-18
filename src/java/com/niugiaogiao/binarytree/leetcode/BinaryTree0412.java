@@ -2,6 +2,9 @@ package com.niugiaogiao.binarytree.leetcode;
 
 import com.niugiaogiao.binarytree.struct.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 面试题 04.12. 求和路径
  * <p>
@@ -35,6 +38,27 @@ public class BinaryTree0412 {
         }
         dfs(node.left, sum, t + node.val);
         dfs(node.right, sum, t + node.val);
+    }
+
+
+    static Map<Integer, Integer> dict = new HashMap<>();
+
+    public static int pathSumPrefix(TreeNode root, int sum) {
+        dict.put(0, 1);
+        return 0;
+    }
+
+    public static int prefixDfs(TreeNode node, int cur, int targetSum) {
+        if (node == null) return 0;
+
+        int count = 0;
+        cur += node.val;
+        count = dict.getOrDefault(cur - targetSum, 0);
+        dict.put(cur, count + 1);
+        cur += prefixDfs(node.left, cur, targetSum);
+        cur += prefixDfs(node.right, cur, targetSum);
+        dict.put(cur, count - 1);
+        return cur;
     }
 
     public static void main(String[] args) {
