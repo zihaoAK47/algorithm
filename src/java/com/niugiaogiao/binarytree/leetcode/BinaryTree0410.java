@@ -49,6 +49,8 @@ public class BinaryTree0410 {
      * 倒者搜索不行，出现相同元素，如果不出现相同元素该算法可解
      */
     public static boolean run(TreeNode t1, TreeNode t2) {
+        if (findTree) return true;
+
         if (t1 == null && t2 != null) return false;
         if (t1 == null && t2 == null) return true;
 
@@ -68,45 +70,45 @@ public class BinaryTree0410 {
     }
 
     public static void main(String[] args) {
-//        TreeNode t1 = new TreeNode(44);
-//        TreeNode t2 = new TreeNode(2);
-//        TreeNode t3 = new TreeNode(3);
-//        TreeNode t4 = new TreeNode(4);
-//        TreeNode t5 = new TreeNode(5);
-//        TreeNode t6 = new TreeNode(6);
-//        TreeNode t7 = new TreeNode(7);
-//        TreeNode t8 = new TreeNode(8);
-//        TreeNode t9 = new TreeNode(9);
-//        t1.left = t2;
-//        t1.right = t3;
-//        t2.left = t4;
-//        t2.right = t5;
-//        t3.left = t6;
-//        t3.right = t7;
-//        t4.left = t8;
-//        t4.right = t9;
-//
-//        TreeNode r1 = new TreeNode(4);
-//        TreeNode r2 = new TreeNode(8);
-//        TreeNode r3 = new TreeNode(9);
-//        r1.left = r2;
-//        r1.right = r3;
-
-        TreeNode t1 = new TreeNode(1);
-        TreeNode t2 = new TreeNode(1);
-        TreeNode t3 = new TreeNode(2);
-        TreeNode t4 = new TreeNode(2);
-        TreeNode t5 = new TreeNode(3);
+        TreeNode t1 = new TreeNode(44);
+        TreeNode t2 = new TreeNode(2);
+        TreeNode t3 = new TreeNode(3);
+        TreeNode t4 = new TreeNode(4);
+        TreeNode t5 = new TreeNode(5);
+        TreeNode t6 = new TreeNode(6);
+        TreeNode t7 = new TreeNode(7);
+        TreeNode t8 = new TreeNode(8);
+        TreeNode t9 = new TreeNode(9);
         t1.left = t2;
         t1.right = t3;
         t2.left = t4;
         t2.right = t5;
+        t3.left = t6;
+        t3.right = t7;
+        t4.left = t8;
+        t4.right = t9;
 
-        TreeNode r1 = new TreeNode(1);
-        TreeNode r2 = new TreeNode(2);
-        TreeNode r3 = new TreeNode(3);
+        TreeNode r1 = new TreeNode(4);
+        TreeNode r2 = new TreeNode(8);
+        TreeNode r3 = new TreeNode(9);
         r1.left = r2;
         r1.right = r3;
+
+//        TreeNode t1 = new TreeNode(1);
+//        TreeNode t2 = new TreeNode(1);
+//        TreeNode t3 = new TreeNode(2);
+//        TreeNode t4 = new TreeNode(2);
+//        TreeNode t5 = new TreeNode(3);
+//        t1.left = t2;
+//        t1.right = t3;
+//        t2.left = t4;
+//        t2.right = t5;
+//
+//        TreeNode r1 = new TreeNode(1);
+//        TreeNode r2 = new TreeNode(2);
+//        TreeNode r3 = new TreeNode(3);
+//        r1.left = r2;
+//        r1.right = r3;
 
         System.err.println(checkSubTree(t1, r1));
     }
