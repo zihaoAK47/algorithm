@@ -16,31 +16,65 @@ import com.niugiaogiao.binarytree.struct.TreeNode;
  */
 public class BinaryTree0410 {
 
-    public static boolean checkSubTree(TreeNode t1, TreeNode t2) {
+    public static boolean checkSubTree1(TreeNode t1, TreeNode t2) {
         if (t2 == null) return true;
         if (t1 == null) return false;
-        return run(t1, t2) || checkSubTree(t1.left, t2) || checkSubTree(t1.right, t2);
+        return run1(t1, t2) || checkSubTree1(t1.left, t2) || checkSubTree1(t1.right, t2);
     }
 
-    public static boolean run(TreeNode t1, TreeNode t2) {
+    public static boolean run1(TreeNode t1, TreeNode t2) {
         if (t1 == null && t2 == null)
             return true;
         if (t1 == null || t2 == null)
             return false;
         if (t1.val == t2.val) {
-            return run(t1.left, t2.left) && run(t1.right, t2.right);
+            return run1(t1.left, t2.left) && run1(t1.right, t2.right);
         }
         return false;
     }
 
+    public static boolean checkSubTree(TreeNode t1, TreeNode t2) {
+        return run(t1, t2);
+    }
+
+    /**
+     * 倒者搜索不行，出现相同元素
+     */
+    public static boolean run(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 != null) return false;
+        if (t1 == null && t2 == null) return true;
+
+        if (t1.val == t2.val) {
+            return run(t1.left, t2.left) && run(t1.right, t2.right);
+        } else {
+            return run(t1.left, t2) || run(t1.right, t2);
+        }
+    }
+
     public static void main(String[] args) {
-        TreeNode t1 = new TreeNode(1);
+        TreeNode t1 = new TreeNode(4);
         TreeNode t2 = new TreeNode(2);
         TreeNode t3 = new TreeNode(3);
+        TreeNode t4 = new TreeNode(4);
+        TreeNode t5 = new TreeNode(5);
+        TreeNode t6 = new TreeNode(6);
+        TreeNode t7 = new TreeNode(7);
+        TreeNode t8 = new TreeNode(8);
+        TreeNode t9 = new TreeNode(9);
         t1.left = t2;
         t1.right = t3;
-        TreeNode r1 = new TreeNode(2);
-        TreeNode r2 = new TreeNode(3);
+        t2.left = t4;
+        t2.right = t5;
+        t3.left = t6;
+        t3.right = t7;
+        t4.left = t8;
+        t4.right = t9;
+
+        TreeNode r1 = new TreeNode(4);
+        TreeNode r2 = new TreeNode(8);
+        TreeNode r3 = new TreeNode(9);
+        r1.left = r2;
+        r1.right = r3;
         System.err.println(checkSubTree(t1, r1));
     }
 }
