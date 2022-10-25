@@ -6,7 +6,7 @@ import com.niugiaogiao.binarytree.struct.TreeNode;
  * 剑指 Offer II 053. 二叉搜索树中的中序后继
  * 给定一棵二叉搜索树和其中的一个节点 p ，找到该节点在树中的中序后继。如果节点没有中序后继，请返回 null 。
  * <p>
- * 节点 p 的后继是值比 p.val 大的节点中键值最小的节点，即按中序遍历的顺序节点 p 的下一个节点。
+ * 节点p的后继是值比p.val大的节点中键值最小的节点，即按中序遍历的顺序节点 p 的下一个节点。
  * <p>
  * 链接：https://leetcode.cn/problems/P5rCT8
  *
