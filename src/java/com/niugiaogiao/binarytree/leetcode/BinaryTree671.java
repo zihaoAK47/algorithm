@@ -27,7 +27,6 @@ public class BinaryTree671 {
 
     public void run(TreeNode node) {
         if (node == null) return;
-        ;
         if (res != -1 && node.val >= res) return;
         if (node.val > first) res = node.val;
         run(node.left);
