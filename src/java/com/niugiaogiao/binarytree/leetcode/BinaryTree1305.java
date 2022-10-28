@@ -11,6 +11,8 @@ import java.util.List;
  * 两棵二叉搜索树中的所有元素
  * 给你 root1 和 root2 这两棵二叉搜索树。请你返回一个列表，其中包含 两棵树 中的所有整数并按 升序 排序
  *
+ * https://leetcode.cn/problems/all-elements-in-two-binary-search-trees/
+ *
  * @author zihao
  */
 public class BinaryTree1305 {
