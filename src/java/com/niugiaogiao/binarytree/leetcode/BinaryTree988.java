@@ -21,22 +21,43 @@ import java.util.List;
  */
 public class BinaryTree988 {
 
-    static StringBuilder stringBuilder = new StringBuilder();
+    static StringBuilder sb = new StringBuilder();
+    static String res = ((char) ('z' + 1)) + "";
 
     public static String smallestFromLeaf(TreeNode root) {
-        String run = run1(root);
-        return run;
+        run(root);
+        return res;
     }
 
-    public static String run1(TreeNode node) {
+    public static void run(TreeNode node) {
+        if (node == null) return;
+        sb.append((char) (node.val + 'a'));
+        if (node.left == null && node.right == null) {
+            sb.reverse();
+            String t = sb.toString();
+            sb.reverse();
+            if (t.compareTo(res) < 0) {
+                res = t;
+            }
+        }
+
+        run(node.left);
+        run(node.right);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+
+    /**
+     * 错误的实现方式，不会回朔
+     */
+    public static String runField(TreeNode node) {
         if (node == null) return "";
-        String left = run1(node.left);
-        String right = run1(node.right);
+        String left = runField(node.left);
+        String right = runField(node.right);
         String minVal = ((char) (node.val + 'a')) + "";
         if (!"".equals(left) && !"".equals(right)) {
             left = left.concat(minVal);
             right = right.concat(minVal);
-            return left.compareTo(right) >= 1 ? right  : left;
+            return left.compareTo(right) >= 1 ? right : left;
         } else {
             if (!"".equals(left)) {
                 return left.concat(minVal);
@@ -46,33 +67,5 @@ public class BinaryTree988 {
         }
 
         return minVal;
-    }
-
-    public static int run(TreeNode node, int deep) {
-        if (node == null) return -1;
-        int left = run(node.left, deep + 1);
-        int right = run(node.right, deep + 1);
-        int minVal = node.val;
-        if (left != -1 && right != -1) {
-            minVal = Math.min(right * 10 + node.val, left * 10 + node.val);
-        } else {
-            if (left != -1) {
-                minVal = left * 10 + node.val;
-            } else if (right != -1) {
-                minVal = right * 10 + node.val;
-            }
-        }
-        return minVal;
-    }
-
-    public static void main(String[] args) {
-        TreeNode t1 = new TreeNode(4);
-        TreeNode t2 = new TreeNode(0);
-        TreeNode t3 = new TreeNode(1);
-        TreeNode t4 = new TreeNode(1);
-        t1.left = t2;
-        t1.right = t3;
-        t2.left = t4;
-        smallestFromLeaf(t1);
     }
 }
