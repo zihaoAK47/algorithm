@@ -71,4 +71,34 @@ public class BinaryTree049 {
         }
         return result;
     }
+
+
+    /**
+     * dfs 另一种实现方式
+     */
+    static int result1 = 0;
+
+    public static int sumNumbersDFS1(TreeNode root) {
+        run1(root);
+        return result;
+    }
+
+    public static void run1(TreeNode node) {
+        if (node == null) return;
+
+        if (node.left == null && node.right == null) {
+            result1 += node.val;
+        } else {
+            if (node.left != null) {
+                node.left.val += node.val * 10;
+            }
+            if (node.right != null) {
+                node.right.val += node.val * 10;
+            }
+        }
+
+        run1(node.left);
+        run1(node.right);
+        node.val /= 10;
+    }
 }
