@@ -3,8 +3,12 @@ package com.niugiaogiao.binarytree.leetcode;
 import com.niugiaogiao.binarytree.struct.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * 剑指 Offer 34. 二叉树中和为某一值的路径
@@ -22,7 +26,7 @@ public class BinaryTree34 {
     List<Integer> temp = new ArrayList<>();
     List<List<Integer>> res = new LinkedList<>();
 
-    public List<List<Integer>> pathSum(TreeNode root, int target) {
+    public List<List<Integer>> pathSumDFS(TreeNode root, int target) {
         run(root, target, 0);
         return res;
     }
@@ -39,5 +43,45 @@ public class BinaryTree34 {
         run(node.left, target, node.val + sum);
         run(node.right, target, node.val + sum);
         temp.remove(temp.size() - 1);
+    }
+
+    public List<List<Integer>> pathSumBFS(TreeNode root, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Map<TreeNode, TreeNode> dict = new HashMap<>();
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode item = queue.poll();
+            if (item.left == null && item.right == null) {
+                // 回溯
+                int sum = 0;
+                TreeNode tempItem = item;
+                List<Integer> t = new ArrayList<>();
+                while (tempItem != null) {
+                    sum += tempItem.val;
+                    t.add(tempItem.val);
+                    tempItem = dict.get(tempItem);
+                }
+                Collections.reverse(t);
+                if (sum == target) {
+                    res.add(t);
+                }
+                continue;
+            }
+            if (item.left != null) {
+                dict.put(item.left, item);
+                queue.add(item.left);
+            }
+            if (item.right != null) {
+                dict.put(item.right, item);
+                queue.add(item.right);
+            }
+        }
+
+        return res;
     }
 }
