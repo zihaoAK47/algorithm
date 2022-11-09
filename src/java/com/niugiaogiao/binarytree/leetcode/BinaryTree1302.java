@@ -14,7 +14,7 @@ import java.util.Queue;
  */
 public class BinaryTree1302 {
 
-    public int deepestLeavesSum(TreeNode root) {
+    public int deepestLeavesSumBFS(TreeNode root) {
         int sum = 0;
         if (root == null) {
             return sum;
@@ -37,5 +37,31 @@ public class BinaryTree1302 {
             }
         }
         return sum;
+    }
+
+    int sum = 0;
+    int maxDeep = 0;
+    public int deepestLeavesSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        run(root, 1);
+        return sum;
+    }
+
+    public void run(TreeNode node, int deep) {
+        if (node == null) {
+            return;
+        }
+
+        run(node.left, deep + 1);
+        run(node.right, deep + 1);
+        if (maxDeep < deep) {
+            maxDeep = deep;
+            sum = 0;
+        }
+        if (deep == maxDeep) {
+            sum += node.val;
+        }
     }
 }
