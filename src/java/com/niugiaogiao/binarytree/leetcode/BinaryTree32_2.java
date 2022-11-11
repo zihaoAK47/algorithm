@@ -17,7 +17,7 @@ import java.util.Queue;
 
 public class BinaryTree32_2 {
 
-    public List<List<Integer>> levelOrder(TreeNode root) {
+    public List<List<Integer>> levelOrderBFS(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
             return res;
@@ -41,5 +41,33 @@ public class BinaryTree32_2 {
         }
 
         return res;
+    }
+
+    List<List<Integer>> res = new LinkedList<>();
+
+    public List<List<Integer>> levelOrderDFS(TreeNode root) {
+        if (root == null) {
+            return res;
+        }
+        run(root, 1);
+        return res;
+    }
+
+    public void run(TreeNode node, int deep) {
+        if (node == null) {
+            return;
+        }
+
+        if (res.size() < deep) {
+            List<Integer> t = new ArrayList<>();
+            t.add(node.val);
+            res.add(t);
+        } else {
+            List<Integer> list = res.get(deep - 1);
+            list.add(node.val);
+        }
+
+        run(node.left, deep + 1);
+        run(node.right, deep + 1);
     }
 }
