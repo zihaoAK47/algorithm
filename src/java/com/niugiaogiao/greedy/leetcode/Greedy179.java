@@ -41,7 +41,7 @@ public class Greedy179 {
         }
     }
 
-    public static String largestNumber(int[] nums) {
+    public static String largestNumber2(int[] nums) {
         String[] strNum = new String[nums.length];
         for (int i = 0; i < nums.length; ++i) {
             strNum[i] = String.valueOf(nums[i]);
@@ -57,9 +57,37 @@ public class Greedy179 {
         return sb.toString();
     }
 
+    public static String largestNumber3(int[] nums) {
+        int n = nums.length;
+        Integer[] numArr = new Integer[n];
+        for (int i = 0; i < n; ++i) {
+            numArr[i] = nums[i];
+        }
+
+        Arrays.sort(numArr, (x, y) -> {
+            long sx = 10, sy = 10;
+            while (sx <= x) {
+                sx *= 10;
+            }
+            while (sy <= y) {
+                sy *= 10;
+            }
+            return (int) (-sy * x - y + sx * y + x);
+        });
+
+        if (numArr[0] == 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int num : numArr) {
+            sb.append(num);
+        }
+        return sb.toString();
+    }
+
 
     public static void main(String[] args) {
         int[] t = new int[]{10, 2};
-        System.err.println(largestNumber1(t));
+        System.err.println(largestNumber3(t));
     }
 }
