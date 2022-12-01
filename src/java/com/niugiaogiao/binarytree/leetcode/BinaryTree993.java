@@ -11,7 +11,7 @@ import java.util.Queue;
  * 如果二叉树的两个节点深度相同，但 父节点不同 ，则它们是一对堂兄弟节点。
  * 我们给出了具有唯一值的二叉树的根节点 root ，以及树中两个不同节点的值 x 和 y 。
  * 只有与值 x 和 y 对应的节点是堂兄弟节点时，才返回 true 。否则，返回 false
- *
+ * <p>
  * https://leetcode.cn/problems/cousins-in-binary-tree/description/
  *
  * @author zi hao
@@ -20,7 +20,7 @@ import java.util.Queue;
  */
 public class BinaryTree993 {
 
-    public boolean isCousins(TreeNode root, int x, int y) {
+    public boolean isCousinsBFS(TreeNode root, int x, int y) {
         if (root == null) {
             return false;
         }
@@ -34,7 +34,7 @@ public class BinaryTree993 {
         while (!queue.isEmpty() && (deepX == -1 || deepY == -1)) {
             itemDeep++;
             int size = queue.size();
-            for (int i = 0 ; i < size ; ++i) {
+            for (int i = 0; i < size; ++i) {
                 TreeNode itemNode = queue.poll();
                 if (itemNode.left != null) {
                     queue.add(itemNode.left);
@@ -60,5 +60,45 @@ public class BinaryTree993 {
         }
 
         return parentX != null && parentY != null && deepX == deepY && parentX.val != parentY.val;
+    }
+
+    int xDeep = -1;
+    int yDeep = -1;
+    TreeNode xParent = null;
+    TreeNode yParent = null;
+
+    public boolean isCousinsDFS(TreeNode root, int x, int y) {
+        if (root == null)
+            return false;
+
+        run(root, x, y, 0);
+        return xParent != null && yParent != null && xParent != yParent && xDeep == yDeep;
+    }
+
+    public void run(TreeNode node, int x, int y, int deep) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.left != null) {
+            if (node.left.val == x) {
+                xDeep = deep;
+                xParent = node;
+            } else if (node.left.val == y) {
+                yDeep = deep;
+                yParent = node;
+            }
+        }
+        if (node.right != null) {
+            if (node.right.val == x) {
+                xDeep = deep;
+                xParent = node;
+            } else if (node.right.val == y) {
+                yDeep = deep;
+                yParent = node;
+            }
+        }
+        run(node.left, x, y, deep + 1);
+        run(node.right, x, y, deep + 1);
     }
 }
