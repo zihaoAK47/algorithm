@@ -11,6 +11,8 @@ import java.util.Stack;
 /**
  * LCP 44. 开幕式焰火
  * 「力扣挑战赛」开幕式开始了，空中绽放了一颗二叉树形的巨型焰火。 给定一棵二叉树 root 代表焰火，节点值表示巨型焰火这一位置的颜色种类。请帮小扣计算巨型焰火有多少种不同的颜色。
+ * <p>
+ * https://leetcode.cn/problems/KnLfVT/
  *
  * @author zi hao
  * @version 1.0
@@ -19,6 +21,7 @@ import java.util.Stack;
 public class BinaryTree44 {
 
     Set<Integer> dict = new HashSet<>();
+
     public int numColor(TreeNode root) {
         if (root == null) {
             return 0;
@@ -59,7 +62,7 @@ public class BinaryTree44 {
         }
 
         int count = 0;
-        for(Map.Entry<Integer,Integer> item : dict.entrySet()) {
+        for (Map.Entry<Integer, Integer> item : dict.entrySet()) {
             count += item.getValue();
         }
 
