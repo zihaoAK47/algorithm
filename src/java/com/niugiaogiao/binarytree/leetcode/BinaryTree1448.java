@@ -50,6 +50,22 @@ public class BinaryTree1448 {
         return resCount;
     }
 
+    public int goodNodes2(TreeNode root) {
+        count(root, root.val);
+        return ans;
+    }
+
+    int ans = 0;
+    public void count(TreeNode node, int curVal) {
+        if (node == null) return;
+        if (node.val >= curVal) {
+            ans++;
+            curVal = node.val;
+        }
+        count(node.left, curVal);
+        count(node.right, curVal);
+    }
+
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(3);
         TreeNode t2 = new TreeNode(3);
