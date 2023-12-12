@@ -1,7 +1,5 @@
 package com.niugiaogiao.binarytree.leetcode;
 
-import sun.reflect.generics.tree.Tree;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
